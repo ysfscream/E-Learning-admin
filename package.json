@@ -11,11 +11,11 @@
     "build": "node build/build.js"
   },
   "dependencies": {
-    "node-sass": "^4.7.2",
     "vue": "^2.5.13",
     "vue-router": "^3.0.1"
   },
   "devDependencies": {
+    "node-sass": "^4.7.2",
     "autoprefixer": "^7.2.5",
     "babel-core": "^6.26.0",
     "babel-eslint": "^8.2.1",

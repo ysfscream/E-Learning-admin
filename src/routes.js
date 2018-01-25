@@ -6,7 +6,6 @@ Vue.use(Router)
 const childRoutes = [
   { path: 'students', component: () => import('@/views/Students/students') },
 ]
-console.log(childRoutes)
 
 const routes = [
   { path: '/login', component: () => import('@/views/Login'), meta: { requiresAuth: false } },
