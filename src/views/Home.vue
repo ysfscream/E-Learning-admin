@@ -1,6 +1,5 @@
 <template>
   <div class="home-view">
-    wo shi zhu ye
     <router-view/>
   </div>
 </template>
