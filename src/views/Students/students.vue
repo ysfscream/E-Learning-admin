@@ -1,6 +1,5 @@
 <template>
   <div class="student-view">
-    wo shi xuesheng
   </div>
 </template>
 
@@ -14,6 +13,5 @@ export default {
 
 <style lang="scss">
 .student-view {
-  font-size: 100px;
 }
 </style>
