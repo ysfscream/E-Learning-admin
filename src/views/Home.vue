@@ -22,6 +22,7 @@ export default {
 }
 </script>
 
+
 <style lang="scss" scoped>
 .home-view {
   .home-content {

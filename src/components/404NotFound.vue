@@ -25,8 +25,9 @@ export default {
 .not-found {
   text-align: center;
   .icon-not-found {
-    width: 10rem;
-    height: 10rem;
+    width: 20rem;
+    height: 20rem;
+    fill: #818181;
   }
 }
 </style>

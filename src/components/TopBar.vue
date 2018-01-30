@@ -51,7 +51,7 @@ export default {
     top: 0;
     left: 195px;
     right: 0;
-    z-index: 999;
+    z-index: 99;
     box-shadow: 0px 5px 10px #f8f5f5;
     .icon-teacher--header {
       position: relative;

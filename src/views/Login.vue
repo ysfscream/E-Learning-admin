@@ -5,7 +5,7 @@
         <h1>Neusoft 教师登录</h1>
       </div>
       <el-form>
-        <el-form-item>
+        <el-form-item ref="login">
           <el-input placeholder="请输入教师邮箱">
             <template slot="prepend">
               <i class="fas fa-at"></i>

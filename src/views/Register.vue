@@ -4,7 +4,7 @@
       <div class="title-view">
         <h1>Neusoft 教师注册</h1>
       </div>
-      <el-form>
+      <el-form ref="register">
         <el-form-item>
           <el-input placeholder="请输入教师邮箱">
             <template slot="prepend">

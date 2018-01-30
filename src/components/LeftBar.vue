@@ -1,6 +1,7 @@
 <template>
   <div class="left-bar-view">
     <el-menu
+      router
       default-active="0"
       class="left-bar"
       background-color="#354959"
@@ -12,19 +13,29 @@
         </icon-svg>
         <h4 slot="title">易学 教师平台</h4>
       </div>
-      <el-menu-item index="0">
+      <el-menu-item index="/">
         <template slot="title">
           <i class="fas fa-home"></i>
-          <span>首页</span>
+          <touch-ripple>
+            <span>首页</span>
+          </touch-ripple>
         </template>
       </el-menu-item>
-      <el-submenu index="1">
+      <el-submenu index="">
         <template slot="title">
           <i class="fas fa-graduation-cap"></i>
           <span>学生管理</span>
         </template>
-        <el-menu-item index="1-1">学生</el-menu-item>
-        <el-menu-item index="1-2">作业</el-menu-item>
+        <el-menu-item index="/students">
+          <touch-ripple>
+            学生
+          </touch-ripple>
+        </el-menu-item>
+        <el-menu-item index="/homework">
+          <touch-ripple>
+            作业
+          </touch-ripple>
+        </el-menu-item>
       </el-submenu>
     </el-menu>
   </div>
@@ -32,11 +43,13 @@
 
 
 <script>
+import { touchRipple } from 'vue-touch-ripple'
 import IconSvg from './IconSvg'
 
 export default {
   name: 'left-bar-view',
   components: {
+    touchRipple,
     IconSvg,
   },
 }
@@ -45,13 +58,23 @@ export default {
 
 <style lang="scss" scoped>
 .left-bar-view {
+  .v-touch-ripple {
+    position: relative;
+    right: 100px;
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    padding: 0 100px 0 100px;
+  }
   .left-bar {
     position: fixed;
     top: 0;
     bottom: 0;
     float: left;
     width: 200px;
-    z-index: 9999;
+    z-index: 109;
+    border: 1px solid #3b4c5a;
+    box-shadow: 0px 5px 20px #475057;
     .site-title {
       color: #ffffff;
       text-align: center;
