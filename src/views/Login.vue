@@ -6,11 +6,11 @@
       </div>
       <el-form
         ref="login"
-        :model="teacherForm">
+        :model="loginForm">
         <el-form-item prop="email">
           <el-input
             placeholder="请输入教师邮箱"
-            v-model="teacherForm.email">
+            v-model="loginForm.email">
             <template slot="prepend">
               <i class="fas fa-at"></i>
             </template>
@@ -19,7 +19,7 @@
         <el-form-item prop="password">
           <el-input
             type="password"
-            v-model="teacherForm.password"
+            v-model="loginForm.password"
             placeholder="请输入密码"
             @keyup.enter.native="login">
             <template slot="prepend">
@@ -54,7 +54,7 @@ export default {
   name: 'login-view',
   data() {
     return {
-      teacherForm: {
+      loginForm: {
         email: '',
         password: '',
       },
@@ -64,7 +64,7 @@ export default {
   },
   methods: {
     login() {
-      if (!this.teacherForm.email || !this.teacherForm.password) {
+      if (!this.loginForm.email || !this.loginForm.password) {
         this.$notify({
           title: '警告',
           message: '请输入完整的邮箱密码',
@@ -77,7 +77,7 @@ export default {
         Accept: 'application/json',
         'Content-type': 'application/json',
       }
-      const data = this.teacherForm
+      const data = this.loginForm
       axios({
         header,
         method: 'post',
@@ -92,17 +92,19 @@ export default {
           this.$router.push({ path: '/' })
         }
       }).catch((error) => {
-        console.log(error)
         this.$message({
-          message: '登录失败，邮箱或密码错误',
+          message: error.response.data.message,
           type: 'error',
         })
-        this.teacherForm.email = ''
-        this.teacherForm.password = ''
+        this.loginForm.email = ''
+        this.loginForm.password = ''
         this.remmber = false
       })
       this.btnLoading = false
     },
+  },
+  created() {
+    this.loginForm.email = this.$route.query.email
   },
 }
 </script>

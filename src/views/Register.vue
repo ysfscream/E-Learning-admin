@@ -6,12 +6,12 @@
       </div>
       <el-form
         ref="register"
-        :model="teacherForm"
+        :model="registerForm"
         :rules="registerRules">
         <el-form-item prop="email">
           <el-input
             placeholder="请输入教师邮箱"
-            v-model="teacherForm.email">
+            v-model="registerForm.email">
             <template slot="prepend">
               <i class="fas fa-at"></i>
             </template>
@@ -20,7 +20,7 @@
         <el-form-item prop="teacherName">
           <el-input
             placeholder="请输入教师姓名"
-            v-model="teacherForm.teacherName">
+            v-model="registerForm.teacherName">
             <template slot="prepend">
               <i class="far fa-user"></i>
             </template>
@@ -30,7 +30,7 @@
           <el-input
             type="password"
             placeholder="请输入密码"
-            v-model="teacherForm.password">
+            v-model="registerForm.password">
             <template slot="prepend">
               <i class="fas fa-key"></i>
             </template>
@@ -39,7 +39,7 @@
          <el-form-item prop="confirmPassword">
           <el-input
             type="password"
-            v-model="teacherForm.confirmPassword"
+            v-model="registerForm.confirmPassword"
             placeholder="请再次输入密码">
             <template slot="prepend">
               <i class="far fa-keyboard"></i>
@@ -51,7 +51,8 @@
         <el-button
           type="primary"
           icon="el-icon-d-arrow-right"
-          :loading="btnLoading">
+          :loading="btnLoading"
+          @click="register">
           注册
         </el-button>
       </div>
@@ -64,11 +65,13 @@
 
 
 <script>
+import axios from 'axios'
+
 export default {
   name: 'register-view',
   data() {
     return {
-      teacherForm: {
+      registerForm: {
         email: '',
         teacherName: '',
         password: '',
@@ -86,9 +89,59 @@ export default {
           { required: true, message: '请输入密码' },
           { min: 6, message: '密码不少于6位' },
         ],
+        confirmPassword: [
+          { required: true, validator: this.validatePassword },
+          { min: 6, message: '密码不少于6位' },
+        ],
       },
       btnLoading: false,
     }
+  },
+  methods: {
+    register() {
+      this.$refs.register.validate((valid) => {
+        if (!valid) {
+          return
+        }
+        this.btnLoading = true
+        const header = {
+          Accept: 'application/json',
+          'Content-type': 'application/json',
+        }
+        const data = this.registerForm
+        axios({
+          header,
+          method: 'post',
+          url: '/e_api/teachers/register',
+          data,
+        }).then((response) => {
+          if (response.data.status === 200) {
+            this.$message({
+              message: '注册成功',
+              type: 'success',
+            })
+            this.$router.push({ path: '/login', query: { email: data.email } })
+          }
+        }).catch((error) => {
+          this.$message({
+            message: error.response.data.message,
+            type: 'error',
+          })
+        })
+        this.btnLoading = false
+      })
+    },
+    validatePassword(rule, value, callback) {
+      if (!this.registerForm.confirmPassword) {
+        callback(new Error('请输入确认密码'))
+        return
+      }
+      if (this.registerForm.password !== this.registerForm.confirmPassword) {
+        callback(new Error('前后密码不一致'))
+        return
+      }
+      callback()
+    },
   },
 }
 </script>
