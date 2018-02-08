@@ -4,9 +4,11 @@ import '@/assets/scss/e-learning-variables.scss'
 import VueTouchRipple from 'vue-touch-ripple'
 import 'vue-touch-ripple/dist/vue-touch-ripple.css'
 
+import router from '@/routes'
+import store from '@/store'
+
 import Vue from 'vue'
 import App from './App'
-import router from './routes'
 
 Vue.use(ElementUI)
 
@@ -20,6 +22,7 @@ Vue.config.productionTip = false
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
+  store,
   router,
   components: { App },
   template: '<App/>',

@@ -29,7 +29,7 @@
         </el-form-item>
       </el-form>
       <div class="bottom clearfix">
-        <el-checkbox v-model="remmber" class="remember">记住我</el-checkbox>
+        <el-checkbox v-model="remember" class="remember">记住我</el-checkbox>
         <el-button
           type="primary"
           icon="el-icon-d-arrow-right"
@@ -48,6 +48,7 @@
 
 
 <script>
+import { mapActions } from 'vuex'
 import axios from 'axios'
 
 export default {
@@ -58,11 +59,12 @@ export default {
         email: '',
         password: '',
       },
-      remmber: false,
+      remember: false,
       btnLoading: false,
     }
   },
   methods: {
+    ...mapActions(['TEACHER_LOGIN']),
     login() {
       if (!this.loginForm.email || !this.loginForm.password) {
         this.$notify({
@@ -85,20 +87,16 @@ export default {
         data,
       }).then((response) => {
         if (response.data.status === 200) {
-          this.$message({
-            message: '登录成功',
-            type: 'success',
-          })
+          const teacherInfo = response.data.items
+          this.$message.success('登录成功')
+          this.TEACHER_LOGIN({ teacher: teacherInfo, remember: this.remember })
           this.$router.push({ path: '/' })
         }
       }).catch((error) => {
-        this.$message({
-          message: error.response.data.message,
-          type: 'error',
-        })
+        this.$message.error(error.response.data.message)
         this.loginForm.email = ''
         this.loginForm.password = ''
-        this.remmber = false
+        this.remember = false
       })
       this.btnLoading = false
     },

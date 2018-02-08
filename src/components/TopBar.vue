@@ -6,14 +6,14 @@
           class="icon-teacher--header"
           iconID="icon-custom-teacher">
         </icon-svg>
-       <el-dropdown>
+       <el-dropdown trigger="click" @command="handleCommand">
           <span class="el-dropdown-link">
-            欢迎，{{teacherName}}老师 <i class="el-icon-arrow-down el-icon--right"></i>
+            欢迎，{{ teacher.teacherName }}老师 <i class="el-icon-arrow-down el-icon--right"></i>
           </span>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item>修改账户</el-dropdown-item>
             <el-dropdown-item>修改密码</el-dropdown-item>
-            <el-dropdown-item>退出登录</el-dropdown-item>
+            <el-dropdown-item command="logout" divided>退出登录</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </div>
@@ -23,6 +23,7 @@
 
 
 <script>
+import { mapState, mapActions } from 'vuex'
 import IconSvg from './IconSvg'
 
 export default {
@@ -32,8 +33,24 @@ export default {
   },
   data() {
     return {
-      teacherName: '刘大人',
     }
+  },
+  computed: {
+    ...mapState({
+      teacher: state => state.account.teacher,
+    }),
+  },
+  methods: {
+    ...mapActions(['TEACHER_LOGOUT']),
+    handleCommand(command) {
+      if (command === 'logout') {
+        this.logout()
+      }
+    },
+    logout() {
+      this.TEACHER_LOGOUT()
+      this.$router.push('/login')
+    },
   },
 }
 </script>

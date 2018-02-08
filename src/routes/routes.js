@@ -1,8 +1,3 @@
-import Vue from 'vue'
-import Router from 'vue-router'
-
-Vue.use(Router)
-
 const childRoutes = [
   { path: 'students', component: () => import('@/views/Students/students') },
 ]
@@ -14,7 +9,4 @@ const routes = [
   { path: '/', component: () => import('@/views/Home'), children: childRoutes, meta: { requiresAuth: false } },
 ]
 
-export default new Router({
-  mode: 'history',
-  routes,
-})
+export default routes
