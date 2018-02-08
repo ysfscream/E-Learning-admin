@@ -8,7 +8,10 @@
         </icon-svg>
        <el-dropdown trigger="click" @command="handleCommand">
           <span class="el-dropdown-link">
-            欢迎，{{ teacher.teacherName }}老师 <i class="el-icon-arrow-down el-icon--right"></i>
+            欢迎，{{ teacher.teacherName }}
+            <span>
+              {{ role }}
+            </span><i class="el-icon-arrow-down el-icon--right"></i>
           </span>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item>修改账户</el-dropdown-item>
@@ -39,6 +42,9 @@ export default {
     ...mapState({
       teacher: state => state.account.teacher,
     }),
+    role() {
+      return this.teacher.role === 'teacher' ? '老师' : '管理员'
+    },
   },
   methods: {
     ...mapActions(['TEACHER_LOGOUT']),

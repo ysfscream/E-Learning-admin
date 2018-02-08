@@ -18,7 +18,6 @@ const mutations = {
 
 const actions = {
   [TEACHER_LOGIN]({ commit }, payload) {
-    console.log(payload.remember)
     if (payload.remember) {
       localStorage.setItem('teacher', JSON.stringify(payload.teacher))
     } else {

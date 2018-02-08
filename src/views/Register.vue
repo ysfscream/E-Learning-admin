@@ -115,18 +115,12 @@ export default {
           url: '/e_api/teachers/register',
           data,
         }).then((response) => {
-          if (response.data.status === 200) {
-            this.$message({
-              message: '注册成功',
-              type: 'success',
-            })
+          if (response.data.status === 201) {
+            this.$message.success('注册成功')
             this.$router.push({ path: '/login', query: { email: data.email } })
           }
         }).catch((error) => {
-          this.$message({
-            message: error.response.data.message,
-            type: 'error',
-          })
+          this.$message.error(error.response.data.message)
         })
         this.btnLoading = false
       })
