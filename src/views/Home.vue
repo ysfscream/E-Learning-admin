@@ -1,7 +1,7 @@
 <template>
   <div class="home-view">
-    <top-bar/>
-    <left-bar/>
+    <the-top-bar/>
+    <the-left-bar/>
     <div class="home-content">
       <router-view/>
     </div>
@@ -10,14 +10,14 @@
 
 
 <script>
-import TopBar from '@/components/TopBar'
-import LeftBar from '@/components/LeftBar'
+import TheTopBar from '@/components/TheTopBar'
+import TheLeftBar from '@/components/TheLeftBar'
 
 export default {
   name: 'home-view',
   components: {
-    LeftBar,
-    TopBar,
+    TheLeftBar,
+    TheTopBar,
   },
 }
 </script>
