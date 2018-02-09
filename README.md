@@ -14,7 +14,7 @@ npm install && yarn
 npm run dev && yarn dev
 
 #打包📦
-npm run build
+npm run build && yarn build
 
 # build for production and view the bundle analyzer report
 npm run build --report
