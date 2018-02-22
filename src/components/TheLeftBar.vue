@@ -2,10 +2,10 @@
   <div class="left-bar-view">
     <el-menu
       router
-      default-active="0"
       class="left-bar"
       background-color="#354959"
-      text-color="#fff">
+      text-color="#fff"
+      :default-active="defaultActive">
       <div class="site-title">
         <icon-svg
           class="icon-teacher"
@@ -21,7 +21,7 @@
           </touch-ripple>
         </template>
       </el-menu-item>
-      <el-submenu index="">
+      <el-submenu index="1">
         <template slot="title">
           <i class="fas fa-graduation-cap"></i>
           <span>学生管理</span>
@@ -51,6 +51,11 @@ export default {
   components: {
     touchRipple,
     IconSvg,
+  },
+  computed: {
+    defaultActive() {
+      return `/${this.$route.path.split('/')[1]}`
+    },
   },
 }
 </script>
@@ -103,4 +108,3 @@ export default {
   }
 }
 </style>
-
