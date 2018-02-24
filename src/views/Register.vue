@@ -120,7 +120,11 @@ export default {
             this.$router.push({ path: '/login', query: { email: data.email } })
           }
         }).catch((error) => {
-          this.$message.error(error.response.data.message)
+          if (error.response.status === 500) {
+            this.$message.error('服务器错误')
+          } else {
+            this.$message.error(error.response.data.message)
+          }
         })
         this.btnLoading = false
       })

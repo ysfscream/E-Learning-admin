@@ -15,10 +15,7 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   if (to.meta.requiresAuth) {
     if (!store.state.account.teacher.token) {
-      next({
-        path: '/login',
-        query: { redirect: to.fullPath },
-      })
+      next({ path: '/login' })
     } else {
       next()
     }

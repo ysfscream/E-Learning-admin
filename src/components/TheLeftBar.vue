@@ -44,7 +44,7 @@
 
 <script>
 import { touchRipple } from 'vue-touch-ripple'
-import IconSvg from './IconSvg'
+import IconSvg from './common/IconSvg'
 
 export default {
   name: 'left-bar-view',

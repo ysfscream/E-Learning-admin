@@ -14,28 +14,37 @@
             </span><i class="el-icon-arrow-down el-icon--right"></i>
           </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item>修改账户</el-dropdown-item>
-            <el-dropdown-item>修改密码</el-dropdown-item>
+            <el-dropdown-item command="editTeacherForm">查看个人信息</el-dropdown-item>
+            <el-dropdown-item command="changePassword">修改密码</el-dropdown-item>
             <el-dropdown-item command="logout" divided>退出登录</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </div>
     </div>
+
+    <!-- 编辑查看教师信息 -->
+    <edit-teacher ref="editTeacher" :dialogFormVisible.sync="visible"></edit-teacher>
+
+
   </div>
 </template>
 
 
 <script>
 import { mapState, mapActions } from 'vuex'
-import IconSvg from './IconSvg'
+
+import EditTeacher from '../views/Teachers/EditTeacher'
+import IconSvg from './common/IconSvg'
 
 export default {
   name: 'top-bar-view',
   components: {
     IconSvg,
+    EditTeacher,
   },
   data() {
     return {
+      visible: false,
     }
   },
   computed: {
@@ -51,11 +60,17 @@ export default {
     handleCommand(command) {
       if (command === 'logout') {
         this.logout()
+      } else if (command === 'editTeacherForm') {
+        this.editTeacherForm()
       }
     },
     logout() {
       this.TEACHER_LOGOUT()
       this.$router.push('/login')
+    },
+    editTeacherForm() {
+      this.visible = true
+      this.$refs.editTeacher.loadData()
     },
   },
 }
