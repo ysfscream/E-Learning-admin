@@ -10,7 +10,7 @@
 
 
 <script>
-import IconSvg from './IconSvg'
+import IconSvg from './common/IconSvg'
 
 export default {
   name: 'not-found',
