@@ -23,8 +23,10 @@
     </div>
 
     <!-- 编辑查看教师信息 -->
-    <edit-teacher ref="editTeacher" :dialogFormVisible.sync="visible"></edit-teacher>
+    <edit-teacher ref="editTeacher" :dialogFormVisible.sync="visibleEdit"></edit-teacher>
 
+    <!-- 修改教师密码 -->
+    <change-password :dialogFormVisible.sync="visibleChange"></change-password>
 
   </div>
 </template>
@@ -34,6 +36,7 @@
 import { mapState, mapActions } from 'vuex'
 
 import EditTeacher from '../views/Teachers/EditTeacher'
+import ChangePassword from '../views/Teachers/ChangePassword'
 import IconSvg from './common/IconSvg'
 
 export default {
@@ -41,10 +44,12 @@ export default {
   components: {
     IconSvg,
     EditTeacher,
+    ChangePassword,
   },
   data() {
     return {
-      visible: false,
+      visibleEdit: false,
+      visibleChange: false,
     }
   },
   computed: {
@@ -62,6 +67,8 @@ export default {
         this.logout()
       } else if (command === 'editTeacherForm') {
         this.editTeacherForm()
+      } else if (command === 'changePassword') {
+        this.changePassword()
       }
     },
     logout() {
@@ -69,8 +76,11 @@ export default {
       this.$router.push('/login')
     },
     editTeacherForm() {
-      this.visible = true
+      this.visibleEdit = true
       this.$refs.editTeacher.loadData()
+    },
+    changePassword() {
+      this.visibleChange = true
     },
   },
 }

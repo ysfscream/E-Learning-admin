@@ -160,7 +160,7 @@ export default {
       this.loading = true
       this.loadingText = '正在修改您的信息...'
       const data = this.teacherForm
-      httpPut(`/teachers/${id}`, data).then((response) => {
+      httpPut(`/teachers/info/${id}`, data).then((response) => {
         if (response.data.status === 201) {
           this.$message.success('修改成功')
           this.$emit('update:dialogFormVisible', false)
