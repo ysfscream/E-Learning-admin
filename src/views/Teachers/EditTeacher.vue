@@ -63,8 +63,8 @@
               <e-learn-select
                 v-model="teacherForm.department"
                 :data="teacherForm.department"
-                url="/departments"
-                :disabled="!isEdit">
+                :disabled="!isEdit"
+                url="/departments/departments">
               </e-learn-select>
             </el-form-item>
           </el-col>

@@ -1,8 +1,9 @@
 <template>
   <div class="e-learn-select-view">
     <el-select
+      filterable
       :disabled="disabled"
-      placeholder="请选择"
+      :placeholder="placeholder ? placeholder : '请选择'"
       :value="currentData"
       @change="currentValue"
       @visible-change="getDataList">
@@ -16,6 +17,7 @@
   </div>
 </template>
 
+
 <script>
 import { httpGet } from '@/utils/api'
 
@@ -28,9 +30,11 @@ export default {
     },
     disabled: {
       type: Boolean,
-      required: true,
     },
     data: {
+      type: String,
+    },
+    placeholder: {
       type: String,
     },
   },
@@ -63,7 +67,7 @@ export default {
 </script>
 
 
-<style lang="scss" scoped>
+<style lang="scss">
 .e-learn-select-view {
   .el-select {
     width: 100%;

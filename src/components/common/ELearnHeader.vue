@@ -36,13 +36,14 @@ export default {
 
 <style lang="scss">
 .e-learn-header {
+  width: 100%;
   .el-card__body {
     padding: 5px 20px 5px 20px;
   }
   .share-header {
     margin: 95px 0 20px 0;
+    clear: both;
     h3 {
-    margin-right: 70%;
     display: inline-block;
     }
     .el-button {

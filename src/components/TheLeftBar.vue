@@ -33,7 +33,17 @@
         </el-menu-item>
         <el-menu-item index="/homework">
           <touch-ripple>
-            作业
+            系别
+          </touch-ripple>
+        </el-menu-item>
+        <el-menu-item index="/homework">
+          <touch-ripple>
+            专业
+          </touch-ripple>
+        </el-menu-item>
+        <el-menu-item index="/homework">
+          <touch-ripple>
+            班级
           </touch-ripple>
         </el-menu-item>
       </el-submenu>
@@ -60,6 +70,27 @@
         <el-menu-item index="/shares">
           <touch-ripple>
             分享
+          </touch-ripple>
+        </el-menu-item>
+      </el-submenu>
+      <el-submenu index="3">
+        <template slot="title">
+          <i class="fas fa-comment-alt"></i>
+          <span>消息管理</span>
+        </template>
+        <el-menu-item index="/ppt">
+          <touch-ripple>
+            评论
+          </touch-ripple>
+        </el-menu-item>
+        <el-menu-item index="/ppt">
+          <touch-ripple>
+            回复
+          </touch-ripple>
+        </el-menu-item>
+        <el-menu-item index="/docs">
+          <touch-ripple>
+            作业
           </touch-ripple>
         </el-menu-item>
       </el-submenu>

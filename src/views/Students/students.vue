@@ -1,21 +1,169 @@
 <template>
   <div class="student-view">
     <e-learn-header title="这些是注册过该平台的学生" operBtn="导入学生" ></e-learn-header>
+    <e-learn-null v-if="isEmpty"></e-learn-null>
+    <div class="check-students">
+      <el-row :gutter="20">
+        <el-col :span="8">
+          <e-learn-select
+            v-model="professional"
+            :data="professional"
+            placeholder="选择专业或输入专业搜索"
+            url="/departments/professional">
+          </e-learn-select>
+        </el-col>
+        <el-col :span="8">
+          <e-learn-select
+            v-model="className"
+            :data="className"
+            placeholder="选择班级或输入班级搜索"
+            url="/departments/classes">
+          </e-learn-select>
+        </el-col>
+        <el-col :span="2">
+          <el-button
+            round>
+            分类查询
+          </el-button>
+        </el-col>
+      </el-row>
+    </div>
+    <el-card v-if="!isEmpty">
+      <el-table
+        v-loading="loading"
+        ref="multipleTable"
+        :data="studentRcords"
+        tooltip-effect="dark"
+        style="width: 100%"
+        height="450"
+        @selection-change="handleSelectionChange">
+        <el-table-column
+          label="平台头像">
+          <template slot-scope="scope">
+            <img :src="scope.row.headImg" alt="" width="30" height="30">
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="姓名">
+          <template slot-scope="scope">
+            <el-tooltip
+              effect="dark"
+              :content="scope.row.isLogin ? '在线' : '离线'"
+              placement="top-start">
+              <span>{{ scope.row.studentName }}</span>
+            </el-tooltip>
+            <el-badge v-if="scope.row.isLogin" is-dot class="item"></el-badge>
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="学号">
+          <template slot-scope="scope">
+            <el-tooltip effect="dark" content="点击查看详情" placement="top-start">
+              <router-link
+                :to="{ path: '/'}">
+                {{ scope.row.studentID }}
+              </router-link>
+            </el-tooltip>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="className"
+          label="班级">
+        </el-table-column>
+        <el-table-column
+          prop="professional"
+          label="专业">
+        </el-table-column>
+        <el-table-column
+          sortable
+          label="注册时间"
+          prop="createAt"
+          width="200px">
+        </el-table-column>
+         <el-table-column
+          label="操作">
+          <template slot-scope="scope">
+            <el-tooltip effect="dark" content="删除" placement="top-start">
+              <el-button
+                size="mini"
+                type="danger"
+                icon="el-icon-close"
+                round>
+              </el-button>
+            </el-tooltip>
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-card>
   </div>
 </template>
 
 
 <script>
 import ELearnHeader from '@/components/common/ELearnHeader'
+import ELearnNull from '@/components/common/ELearnNull'
+import ELearnSelect from '@/components/common/ELearnSelect'
+
+import { httpGet } from '@/utils/api'
 
 export default {
   name: 'student-view',
   components: {
     ELearnHeader,
+    ELearnNull,
+    ELearnSelect,
+  },
+  data() {
+    return {
+      isEmpty: false,
+      loading: false,
+      studentRcords: [],
+      className: '',
+      professional: '',
+    }
+  },
+  methods: {
+    loadData() {
+      httpGet('/students').then((response) => {
+        this.loading = true
+        if (response.data.status === 200) {
+          if (response.data.items.students.length) {
+            this.isEmpty = false
+            this.studentRcords = response.data.items.students
+          } else {
+            this.isEmpty = true
+          }
+        }
+        this.loading = false
+      })
+    },
+    handleSelectionChange() {
+
+    },
+  },
+  created() {
+    this.loadData()
   },
 }
 </script>
 
 
 <style lang="scss">
+.student-view {
+  .check-students {
+    margin: 30px 0 30px 0;
+    .el-select {
+      margin-right: 50px;
+    }
+    .el-select .el-input .el-select__caret {
+      display: none;
+    }
+  }
+  clear: both;
+  .item {
+    position: relative;
+    right: 5px;
+    bottom: 3px;
+  }
+}
 </style>

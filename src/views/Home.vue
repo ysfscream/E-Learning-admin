@@ -26,7 +26,7 @@ export default {
 <style lang="scss" scoped>
 .home-view {
   .home-content {
-    margin: 80px 20px 0 220px;
+    margin: 110px 40px 0 240px;
   }
 }
 </style>
