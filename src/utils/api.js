@@ -26,6 +26,8 @@ const onError = (error) => {
     Message.error('服务器错误')
   } else if (status === 422) {
     Message.error(error.response.data.message)
+  } else if (status === 400) {
+    Message.error(error.response.data.message)
   }
   return Promise.reject(error)
 }

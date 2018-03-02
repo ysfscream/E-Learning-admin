@@ -2,7 +2,7 @@
   <div class="student-view">
     <e-learn-header title="这些是注册过该平台的学生" operBtn="导入学生" ></e-learn-header>
     <e-learn-null v-if="isEmpty"></e-learn-null>
-    <div class="check-students">
+    <div v-if="!isEmpty" class="check-students">
       <el-row :gutter="20">
         <el-col :span="8">
           <e-learn-select
@@ -29,14 +29,27 @@
       </el-row>
     </div>
     <el-card v-if="!isEmpty">
+      <el-button
+        v-if="isDeleteAll"
+        class="delete-all"
+        size="mini"
+        type="danger"
+        icon="el-icon-close"
+        round
+        @click="deleteAllData">
+        删除选项
+      </el-button>
       <el-table
         v-loading="loading"
         ref="multipleTable"
         :data="studentRcords"
         tooltip-effect="dark"
         style="width: 100%"
-        height="450"
         @selection-change="handleSelectionChange">
+        <el-table-column
+          type="selection"
+          width="55">
+        </el-table-column>
         <el-table-column
           label="平台头像">
           <template slot-scope="scope">
@@ -67,6 +80,7 @@
           </template>
         </el-table-column>
         <el-table-column
+          sortable
           prop="className"
           label="班级">
         </el-table-column>
@@ -88,7 +102,8 @@
                 size="mini"
                 type="danger"
                 icon="el-icon-close"
-                round>
+                round
+                @click="deleteData(scope.row.studentID)">
               </el-button>
             </el-tooltip>
           </template>
@@ -104,7 +119,7 @@ import ELearnHeader from '@/components/common/ELearnHeader'
 import ELearnNull from '@/components/common/ELearnNull'
 import ELearnSelect from '@/components/common/ELearnSelect'
 
-import { httpGet } from '@/utils/api'
+import { httpGet, httpDelete } from '@/utils/api'
 
 export default {
   name: 'student-view',
@@ -117,15 +132,26 @@ export default {
     return {
       isEmpty: false,
       loading: false,
+      isDeleteAll: false,
       studentRcords: [],
       className: '',
       professional: '',
+      ids: [],
     }
+  },
+  watch: {
+    ids() {
+      if (this.ids.length) {
+        this.isDeleteAll = true
+      } else {
+        this.isDeleteAll = false
+      }
+    },
   },
   methods: {
     loadData() {
+      this.loading = true
       httpGet('/students').then((response) => {
-        this.loading = true
         if (response.data.status === 200) {
           if (response.data.items.students.length) {
             this.isEmpty = false
@@ -137,8 +163,30 @@ export default {
         this.loading = false
       })
     },
-    handleSelectionChange() {
-
+    deleteData(id) {
+      this.$confirm('确定要删除该学生吗？').then(() => {
+        httpDelete(`/students/deleteStudent/${id}`).then((response) => {
+          if (response.data.status === 201) {
+            this.$message.success('删除成功')
+            this.loadData()
+          }
+        })
+      }).catch(() => {})
+    },
+    deleteAllData() {
+      const queryIds = this.ids.join(',')
+      this.$confirm('确定要删除所有的选中项？').then(() => {
+        httpDelete(`/students/deleteAll/?ids=${queryIds}`).then((response) => {
+          if (response.data.status === 201) {
+            this.$message.success('删除成功')
+            this.loadData()
+          }
+        })
+      }).catch(() => {})
+    },
+    handleSelectionChange(row) {
+      this.ids = row.map(rowItem => rowItem.studentID)
+      this.isDeleteAll = true
     },
   },
   created() {
@@ -150,6 +198,9 @@ export default {
 
 <style lang="scss">
 .student-view {
+  .delete-all {
+    margin: 10px 0 10px 0;
+  }
   .check-students {
     margin: 30px 0 30px 0;
     .el-select {

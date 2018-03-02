@@ -31,19 +31,9 @@
             学生
           </touch-ripple>
         </el-menu-item>
-        <el-menu-item index="/homework">
+        <el-menu-item index="/docs">
           <touch-ripple>
-            系别
-          </touch-ripple>
-        </el-menu-item>
-        <el-menu-item index="/homework">
-          <touch-ripple>
-            专业
-          </touch-ripple>
-        </el-menu-item>
-        <el-menu-item index="/homework">
-          <touch-ripple>
-            班级
+            作业
           </touch-ripple>
         </el-menu-item>
       </el-submenu>
@@ -88,9 +78,25 @@
             回复
           </touch-ripple>
         </el-menu-item>
-        <el-menu-item index="/docs">
+      </el-submenu>
+      <el-submenu index="4">
+        <template slot="title">
+          <i class="fas fa-sitemap"></i>
+          <span>系别管理</span>
+        </template>
+        <el-menu-item index="/homework">
           <touch-ripple>
-            作业
+            系别
+          </touch-ripple>
+        </el-menu-item>
+        <el-menu-item index="/homework">
+          <touch-ripple>
+            专业
+          </touch-ripple>
+        </el-menu-item>
+        <el-menu-item index="/homework">
+          <touch-ripple>
+            班级
           </touch-ripple>
         </el-menu-item>
       </el-submenu>
