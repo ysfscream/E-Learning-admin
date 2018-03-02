@@ -31,9 +31,72 @@
             学生
           </touch-ripple>
         </el-menu-item>
-        <el-menu-item index="/homework">
+        <el-menu-item index="/docs">
           <touch-ripple>
             作业
+          </touch-ripple>
+        </el-menu-item>
+      </el-submenu>
+      <el-submenu index="2">
+        <template slot="title">
+          <i class="fas fa-folder-open"></i>
+          <span>资源管理</span>
+        </template>
+        <el-menu-item index="/ppt">
+          <touch-ripple>
+            课件
+          </touch-ripple>
+        </el-menu-item>
+        <el-menu-item index="/docs">
+          <touch-ripple>
+            文档
+          </touch-ripple>
+        </el-menu-item>
+        <el-menu-item index="/video">
+          <touch-ripple>
+            视频
+          </touch-ripple>
+        </el-menu-item>
+        <el-menu-item index="/shares">
+          <touch-ripple>
+            分享
+          </touch-ripple>
+        </el-menu-item>
+      </el-submenu>
+      <el-submenu index="3">
+        <template slot="title">
+          <i class="fas fa-comment-alt"></i>
+          <span>消息管理</span>
+        </template>
+        <el-menu-item index="/ppt">
+          <touch-ripple>
+            评论
+          </touch-ripple>
+        </el-menu-item>
+        <el-menu-item index="/ppt">
+          <touch-ripple>
+            回复
+          </touch-ripple>
+        </el-menu-item>
+      </el-submenu>
+      <el-submenu index="4">
+        <template slot="title">
+          <i class="fas fa-sitemap"></i>
+          <span>系别管理</span>
+        </template>
+        <el-menu-item index="/homework">
+          <touch-ripple>
+            系别
+          </touch-ripple>
+        </el-menu-item>
+        <el-menu-item index="/homework">
+          <touch-ripple>
+            专业
+          </touch-ripple>
+        </el-menu-item>
+        <el-menu-item index="/homework">
+          <touch-ripple>
+            班级
           </touch-ripple>
         </el-menu-item>
       </el-submenu>
@@ -67,7 +130,7 @@ export default {
     position: relative;
     right: 100px;
     display: inline-block;
-    width: 100%;
+    width: 50%;
     height: 100%;
     padding: 0 100px 0 100px;
   }
@@ -95,6 +158,9 @@ export default {
        .svg-inline--fa {
          color: #18B6E4;
       }
+    }
+    .left-bar-view .left-bar span[data-v-05766d8b] {
+      padding-left: 10px;
     }
     span {
       padding-left: 5px;

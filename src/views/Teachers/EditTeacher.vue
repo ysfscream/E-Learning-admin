@@ -63,8 +63,8 @@
               <e-learn-select
                 v-model="teacherForm.department"
                 :data="teacherForm.department"
-                url="/departments"
-                :disabled="!isEdit">
+                :disabled="!isEdit"
+                url="/departments/departments">
               </e-learn-select>
             </el-form-item>
           </el-col>
@@ -130,16 +130,15 @@ export default {
   },
   computed: {
     ...mapState({
-      teacher: state => state.account.teacher,
+      id: state => state.account.teacher.id,
     }),
   },
   methods: {
     loadData() {
-      const id = this.teacher.id
       this.loading = true
       this.loadingText = '正在加载您的信息...'
-      httpGet(`/teachers/${id}`).then((response) => {
-        this.teacherForm = response.data.items.teacher
+      httpGet(`/teachers/info/${this.id}`).then((response) => {
+        this.teacherForm = response.data.items
         this.loading = false
         this.isEdit = false
       })
@@ -156,11 +155,10 @@ export default {
       }
     },
     save() {
-      const id = this.teacher.id
       this.loading = true
       this.loadingText = '正在修改您的信息...'
       const data = this.teacherForm
-      httpPut(`/teachers/info/${id}`, data).then((response) => {
+      httpPut(`/teachers/info/${this.id}`, data).then((response) => {
         if (response.data.status === 201) {
           this.$message.success('修改成功')
           this.$emit('update:dialogFormVisible', false)

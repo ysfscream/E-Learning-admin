@@ -1,5 +1,6 @@
 const childRoutes = [
-  { path: 'students', component: () => import('@/views/Students/students'), meta: { requiresAuth: true } },
+  { path: '/students', component: () => import('@/views/Students/Students'), meta: { requiresAuth: true } },
+  { path: '/shares', component: () => import('@/views/Material/Shares'), meta: { requiresAuth: true } },
 ]
 
 const routes = [

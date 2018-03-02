@@ -17,7 +17,6 @@ const ELearnAxios = axios.create({
 const onError = (error) => {
   const { status } = error.response
   if (status === 404) {
-    console.log(error.response.data.message)
     Message.error(error.response.data)
   } else if (status === 401) {
     Message.error('权限认证失败或登录过期，请重新登录')
@@ -25,6 +24,10 @@ const onError = (error) => {
     router.push({ path: '/login' })
   } else if (status === 500) {
     Message.error('服务器错误')
+  } else if (status === 422) {
+    Message.error(error.response.data.message)
+  } else if (status === 400) {
+    Message.error(error.response.data.message)
   }
   return Promise.reject(error)
 }
