@@ -143,6 +143,7 @@ export default {
     z-index: 109;
     border: 1px solid #3b4c5a;
     box-shadow: 0px 5px 20px #475057;
+    overflow: scroll;
     .site-title {
       color: #ffffff;
       text-align: center;
