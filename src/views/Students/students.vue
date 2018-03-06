@@ -1,6 +1,18 @@
 <template>
   <div class="student-view">
-    <e-learn-header title="这些是注册过该平台的学生" operBtn="导入学生" ></e-learn-header>
+    <!-- 导入学生 -->
+    <el-dialog :visible.sync="dialogForm">
+      <excel-import @reload="loadData"></excel-import>
+    </el-dialog>
+    <!-- 学生列表 -->
+    <e-learn-header title="这些是注册过该平台的学生">
+      <el-button
+        type="primary"
+        slot="createBtn"
+        @click="dialogForm = true">
+        批量导入
+      </el-button>
+    </e-learn-header>
     <e-learn-null v-if="isEmpty"></e-learn-null>
     <div v-if="!isEmpty" class="check-students">
       <el-row :gutter="20">
@@ -118,6 +130,7 @@
 import ELearnHeader from '@/components/common/ELearnHeader'
 import ELearnNull from '@/components/common/ELearnNull'
 import ELearnSelect from '@/components/common/ELearnSelect'
+import ExcelImport from '@/components/common/ExcelImport'
 
 import { httpGet, httpDelete } from '@/utils/api'
 
@@ -127,12 +140,14 @@ export default {
     ELearnHeader,
     ELearnNull,
     ELearnSelect,
+    ExcelImport,
   },
   data() {
     return {
       isEmpty: false,
       loading: false,
       isDeleteAll: false,
+      dialogForm: false,
       studentRcords: [],
       className: '',
       professional: '',
@@ -198,6 +213,9 @@ export default {
 
 <style lang="scss">
 .student-view {
+  .el-dialog {
+    width: 80% !important;
+  }
   .delete-all {
     margin: 10px 0 10px 0;
   }
