@@ -129,6 +129,13 @@
           </template>
         </el-table-column>
       </el-table>
+      <el-pagination
+        @current-change="handleCurrentChange"
+        :current-page.sync="page"
+        :page-size="pageSize"
+        layout="total, prev, pager, next"
+        :total="total">
+      </el-pagination>
     </el-card>
   </div>
 </template>
@@ -161,7 +168,8 @@ export default {
       professional: '',
       ids: [],
       page: 1,
-      pageSize: 5,
+      pageSize: 8,
+      total: 0,
     }
   },
   watch: {
@@ -190,6 +198,7 @@ export default {
           if (response.data.items.students.length) {
             this.isEmpty = false
             this.studentRcords = response.data.items.students
+            this.total = response.data.meta.count
           } else {
             this.isEmpty = true
           }
@@ -245,6 +254,10 @@ export default {
       this.professional = ''
       this.loadData()
     },
+    handleCurrentChange(val) {
+      this.page = val
+      this.loadData()
+    },
   },
   created() {
     this.loadData()
@@ -255,6 +268,9 @@ export default {
 
 <style lang="scss">
 .student-view {
+  .el-card {
+    margin-bottom: 20px;
+  }
   .el-dialog {
     width: 80% !important;
   }

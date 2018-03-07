@@ -1,12 +1,19 @@
-html, body, #app {
-  font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
+html,
+body,
+#app {
+  font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
   height: 100%;
   margin: 0;
   padding: 0;
   font-size: 16px;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-weight: 300;
 }
 
@@ -16,10 +23,11 @@ a {
 }
 
 .icon {
-    width: 11em; height: 11em;
-    vertical-align: -0.15em;
-    fill: currentColor;
-    overflow: hidden;
+  width: 11em;
+  height: 11em;
+  vertical-align: -0.15em;
+  fill: currentColor;
+  overflow: hidden;
 }
 
 .el-input__inner {
@@ -27,18 +35,27 @@ a {
 }
 
 .el-input.is-disabled .el-input__inner {
-    background-color: #f5f7fa;
-    border-color: #e4e7ed;
-    color: #606266;
+  background-color: #f5f7fa;
+  border-color: #e4e7ed;
+  color: #606266;
 }
 
 .el-textarea.is-disabled .el-textarea__inner {
-    background-color: #f5f7fa;
-    border-color: #e4e7ed;
-    color: #606266;
-    cursor: not-allowed;
+  background-color: #f5f7fa;
+  border-color: #e4e7ed;
+  color: #606266;
+  cursor: not-allowed;
 }
 
 .el-card {
   border-radius: 10px;
+}
+
+.el-pagination {
+  white-space: nowrap;
+  margin: 20px 30px 0 0;
+  padding: 2px 5px;
+  color: #606266;
+  font-weight: normal;
+  text-align: right;
 }
