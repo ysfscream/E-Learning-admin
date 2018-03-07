@@ -13,8 +13,7 @@
         批量导入
       </el-button>
     </e-learn-header>
-    <e-learn-null v-if="isEmpty"></e-learn-null>
-    <div v-if="!isEmpty" class="check-students">
+    <div class="check-students">
       <el-row :gutter="20">
         <el-col :span="8">
           <e-learn-select
@@ -34,12 +33,21 @@
         </el-col>
         <el-col :span="2">
           <el-button
-            round>
+            round
+            @click="typeSearch">
             分类查询
+          </el-button>
+        </el-col>
+         <el-col :span="2" style="padding-left:20px;">
+          <el-button
+            round
+            @click="clearQuery">
+            清除
           </el-button>
         </el-col>
       </el-row>
     </div>
+    <e-learn-null v-if="isEmpty"></e-learn-null>
     <el-card v-if="!isEmpty">
       <el-button
         v-if="isDeleteAll"
@@ -121,6 +129,13 @@
           </template>
         </el-table-column>
       </el-table>
+      <el-pagination
+        @current-change="handleCurrentChange"
+        :current-page.sync="page"
+        :page-size="pageSize"
+        layout="total, prev, pager, next"
+        :total="total">
+      </el-pagination>
     </el-card>
   </div>
 </template>
@@ -152,6 +167,9 @@ export default {
       className: '',
       professional: '',
       ids: [],
+      page: 1,
+      pageSize: 8,
+      total: 0,
     }
   },
   watch: {
@@ -166,11 +184,21 @@ export default {
   methods: {
     loadData() {
       this.loading = true
-      httpGet('/students').then((response) => {
+      this.className = this.$route.query.className
+      this.professional = this.$route.query.professional
+      let getURL = ''
+      if (!Object.keys(this.$route.query).length) {
+        getURL = `/students?page=${this.page}&pageSize=${this.pageSize}`
+      } else {
+        getURL =
+          `/students?page=${this.page}&pageSize=${this.pageSize}&className=${this.className}&professional=${this.professional}`
+      }
+      httpGet(getURL).then((response) => {
         if (response.data.status === 200) {
           if (response.data.items.students.length) {
             this.isEmpty = false
             this.studentRcords = response.data.items.students
+            this.total = response.data.meta.count
           } else {
             this.isEmpty = true
           }
@@ -203,6 +231,33 @@ export default {
       this.ids = row.map(rowItem => rowItem.studentID)
       this.isDeleteAll = true
     },
+    typeSearch() {
+      if (!this.className && !this.professional) {
+        this.$message.error('请选择任意一项')
+        return
+      }
+      this.$router.push({
+        path: '/students',
+        query: {
+          className: this.className,
+          professional: this.professional,
+        },
+      })
+      this.loading = true
+      this.loadData()
+    },
+    clearQuery() {
+      this.$router.push({
+        path: '/students',
+      })
+      this.className = ''
+      this.professional = ''
+      this.loadData()
+    },
+    handleCurrentChange(val) {
+      this.page = val
+      this.loadData()
+    },
   },
   created() {
     this.loadData()
@@ -213,6 +268,9 @@ export default {
 
 <style lang="scss">
 .student-view {
+  .el-card {
+    margin-bottom: 20px;
+  }
   .el-dialog {
     width: 80% !important;
   }
