@@ -184,19 +184,6 @@ export default {
     border-bottom: 1px solid #E4E7ED;
     margin-bottom: 20px;
     padding-bottom: 10px;
-    .icon-edit {
-      float: right;
-      position: relative;
-      bottom: 38px;
-    }
-    .icon-not-edit {
-      font-size: 1.2rem !important;
-    }
-    .icon-is-edit {
-      color: gray;
-      font-size: 1.2rem !important;
-    }
   }
-
 }
 </style>
