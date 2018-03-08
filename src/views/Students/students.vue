@@ -93,7 +93,7 @@
           <template slot-scope="scope">
             <el-tooltip effect="dark" content="点击查看详情" placement="top-start">
               <router-link
-                :to="{ path: '/'}">
+                :to="{ path: `/students/${scope.row.studentID}`, query: { type: 'view' } }">
                 {{ scope.row.studentID }}
               </router-link>
             </el-tooltip>

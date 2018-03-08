@@ -30,6 +30,10 @@ a {
   overflow: hidden;
 }
 
+.el-input {
+  line-height: 3;
+}
+
 .el-input__inner {
   border-radius: 20px;
 }
@@ -58,4 +62,17 @@ a {
   color: #606266;
   font-weight: normal;
   text-align: right;
+}
+
+.icon-edit {
+  float: right;
+  position: relative;
+  bottom: 38px;
+}
+.icon-not-edit {
+  font-size: 1.2rem !important;
+}
+.icon-is-edit {
+  color: gray;
+  font-size: 1.2rem !important;
 }
