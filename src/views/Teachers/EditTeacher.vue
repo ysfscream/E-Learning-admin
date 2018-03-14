@@ -10,6 +10,7 @@
       :before-close="handleClose">
       <el-row :gutter="20" class="edit-teacher-form">
         <el-form
+          ref="teacherForm"
           :model="teacherForm"
           :rules="isEdit ? editTeacherRules : {}"
           label-position="top"
@@ -155,17 +156,22 @@ export default {
       }
     },
     save() {
-      this.loading = true
-      this.loadingText = '正在修改您的信息...'
-      const data = this.teacherForm
-      httpPut(`/teachers/info/${this.id}`, data).then((response) => {
-        if (response.data.status === 201) {
-          this.$message.success('修改成功')
-          this.$emit('update:dialogFormVisible', false)
+      this.$refs.teacherForm.validate((valid) => {
+        if (!valid) {
+          return
         }
+        this.loading = true
+        this.loadingText = '正在修改您的信息...'
+        const data = this.teacherForm
+        httpPut(`/teachers/info/${this.id}`, data).then((response) => {
+          if (response.data.status === 201) {
+            this.$message.success('修改成功')
+            this.$emit('update:dialogFormVisible', false)
+          }
+          this.loading = false
+        })
         this.loading = false
       })
-      this.loading = false
     },
   },
   created() {

@@ -9,6 +9,7 @@
       :before-close="handleClose">
       <el-row :gutter="20" class="edit-teacher-form">
         <el-form
+          ref="teacherPasswordForm"
           :model="teacherPasswordForm"
           :rules="changePasswordRules"
           label-position="top"
@@ -106,33 +107,38 @@ export default {
       }).catch(() => {})
     },
     save() {
-      const id = this.teacher.id
-      this.loading = true
-      this.loadingText = '正在修改您的密码...'
-      const data = {
-        oldPassword: this.teacherPasswordForm.oldPassword,
-        password: this.teacherPasswordForm.password,
-      }
-      httpPut(`/teachers/password/${id}`, data).then((response) => {
-        if (response.data.status === 201) {
-          if (data.oldPassword === data.password) {
-            this.$message.info('密码未变更')
-            this.$emit('update:dialogFormVisible', false)
-            this.teacherPasswordForm = {
-              oldPassword: '',
-              password: '',
-              confirmPassword: '',
-            }
-          } else {
-            this.teacherPasswordForm = {}
-            this.$message.success('修改成功, 请重新登录')
-            this.$router.push({ path: '/login' })
-            this.$emit('update:dialogFormVisible', false)
-          }
+      this.$refs.teacherPasswordForm.validate((valid) => {
+        if (!valid) {
+          return
         }
+        const id = this.teacher.id
+        this.loading = true
+        this.loadingText = '正在修改您的密码...'
+        const data = {
+          oldPassword: this.teacherPasswordForm.oldPassword,
+          password: this.teacherPasswordForm.password,
+        }
+        httpPut(`/teachers/password/${id}`, data).then((response) => {
+          if (response.data.status === 201) {
+            if (data.oldPassword === data.password) {
+              this.$message.info('密码未变更')
+              this.$emit('update:dialogFormVisible', false)
+              this.teacherPasswordForm = {
+                oldPassword: '',
+                password: '',
+                confirmPassword: '',
+              }
+            } else {
+              this.teacherPasswordForm = {}
+              this.$message.success('修改成功, 请重新登录')
+              this.$router.push({ path: '/login' })
+              this.$emit('update:dialogFormVisible', false)
+            }
+          }
+          this.loading = false
+        })
         this.loading = false
       })
-      this.loading = false
     },
     validatePassword(rule, value, callback) {
       if (!this.teacherPasswordForm.confirmPassword) {

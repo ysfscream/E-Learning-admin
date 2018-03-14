@@ -52,7 +52,7 @@
             文档
           </touch-ripple>
         </el-menu-item>
-        <el-menu-item index="/video">
+        <el-menu-item index="/videos">
           <touch-ripple>
             视频
           </touch-ripple>
