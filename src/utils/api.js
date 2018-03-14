@@ -22,7 +22,7 @@ const onError = (error) => {
     Message.error('权限认证失败或登录过期，请重新登录')
     store.dispatch('TEACHER_LOGOUT')
     router.push({ path: '/login' })
-  } else if (status === 500) {
+  } else if (status >= 500) {
     Message.error('服务器错误')
   } else if (status === 422) {
     Message.error(error.response.data.message)

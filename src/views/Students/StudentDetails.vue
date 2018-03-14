@@ -18,6 +18,7 @@
       <div class="text item">
         <el-row :gutter="20" class="edit-teacher-form">
           <el-form
+            ref="studentForm"
             :model="studentForm"
             :rules="isEdit ? editStudentRules : {}"
             label-position="top"
@@ -138,7 +139,27 @@ export default {
     return {
       loading: false,
       studentForm: {},
-      editStudentRules: {},
+      editStudentRules: {
+        studentID: [
+          { required: true, message: '请填写学号' },
+        ],
+        studentName: [
+          { required: true, message: '请填写姓名' },
+        ],
+        className: [
+          { required: true, message: '请填写班级' },
+        ],
+        professional: [
+          { required: true, message: '请选择专业' },
+        ],
+        email: [
+          { required: true, message: '请输入邮箱地址' },
+          { type: 'email', message: '请输入正确的邮箱地址' },
+        ],
+        gender: [
+          { required: true, message: '性别' },
+        ],
+      },
     }
   },
   computed: {
@@ -170,13 +191,18 @@ export default {
       this.$router.push({ path: this.$route.path, query: { type: 'edit' } })
     },
     save() {
-      const id = this.studentForm.studentID
-      const data = this.studentForm
-      httpPut(`/students/info/${id}`, data).then((response) => {
-        if (response.data.status === 201) {
-          this.$message.success('修改成功')
-          this.$router.push({ path: '/students' })
+      this.$refs.studentForm.validate((valid) => {
+        if (!valid) {
+          return
         }
+        const id = this.studentForm.studentID
+        const data = this.studentForm
+        httpPut(`/students/info/${id}`, data).then((response) => {
+          if (response.data.status === 201) {
+            this.$message.success('修改成功')
+            this.$router.push({ path: '/students' })
+          }
+        })
       })
     },
     resetPassword() {

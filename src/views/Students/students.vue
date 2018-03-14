@@ -38,7 +38,7 @@
             分类查询
           </el-button>
         </el-col>
-         <el-col :span="2" style="padding-left:20px;">
+        <el-col :span="2" style="padding-left:30px;">
           <el-button
             round
             @click="clearQuery">

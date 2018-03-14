@@ -45,6 +45,7 @@
    <e-learn-null v-if="isEmpty"></e-learn-null>
 
     <el-dialog
+      :show-close="false"
       :visible="dialogFormVisible">
       <el-row :gutter="20" class="edit-teacher-form">
         <el-form
@@ -74,12 +75,16 @@
       <div slot="footer" class="dialog-footer">
         <el-button
           @click="dialogFormVisible = false"
-          icon="el-icon-back">离 开</el-button>
+          icon="el-icon-back">
+          离 开
+        </el-button>
         <el-button
           type="primary"
           @click="save"
           :loading="loading"
-          icon="el-icon-success">创 建</el-button>
+          icon="el-icon-success">
+          创 建
+        </el-button>
       </div>
     </el-dialog>
   </div>
@@ -116,12 +121,25 @@ export default {
     }),
   },
   methods: {
+    loadData() {
+      httpGet(`/meterials/getShare/${this.id}`).then((response) => {
+        if (response.status === 200) {
+          if (response.data.items.length !== 0) {
+            this.isEmpty = false
+            this.sharesRecords = response.data.items
+          } else {
+            this.sharesRecords = response.data.items
+            this.isEmpty = true
+          }
+        }
+      })
+    },
     save() {
       this.loading = true
       if (this.dialogFormVisible) {
         const data = this.sharesForm
         if (Object.keys(this.sharesForm).length) {
-          httpPut(`/teachers/createShare/${this.id}`, data).then((response) => {
+          httpPut(`/meterials/createShare/${this.id}`, data).then((response) => {
             if (response.status === 201) {
               this.$message.success('创建分享成功')
               this.dialogFormVisible = false
@@ -134,7 +152,7 @@ export default {
         }
       } else {
         const data = this.sharesRecords
-        httpPut(`/teachers/updateShare/${this.id}`, data).then((response) => {
+        httpPut(`/meterials/updateShare/${this.id}`, data).then((response) => {
           if (response.status === 201) {
             this.$message.success('修改分享成功')
             this.dialogFormVisible = false
@@ -145,24 +163,18 @@ export default {
       this.loading = false
     },
     deleteData(id) {
-      httpDelete(`/teachers/deleteShare/${this.id}?shareId=${id}`).then((response) => {
-        if (response.status === 201) {
-          this.$message.success('已删除该分享')
-          this.loadData()
-        }
-      })
-    },
-    loadData() {
-      httpGet(`/teachers/getShare/${this.id}`).then((response) => {
-        if (response.status === 200) {
-          if (response.data.items.length !== 0) {
-            this.isEmpty = false
-            this.sharesRecords = response.data.items
-          } else {
-            this.isEmpty = true
+      this.$confirm('确定要删除该分享吗？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+      }).then(() => {
+        httpDelete(`/meterials/deleteShare/${this.id}?shareId=${id}`).then((response) => {
+          if (response.status === 201) {
+            this.$message.success('已删除该分享')
+            this.loadData()
           }
-        }
-      })
+        })
+      }).catch(() => {})
     },
   },
   created() {
