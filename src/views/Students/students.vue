@@ -200,6 +200,7 @@ export default {
             this.studentRcords = response.data.items.students
             this.total = response.data.meta.count
           } else {
+            this.ids = []
             this.isEmpty = true
           }
         }
