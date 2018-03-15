@@ -70,6 +70,15 @@
       </el-col>
     </el-row>
 
+    <el-pagination
+      v-if="!isEmpty"
+      @current-change="handleCurrentChange"
+      :current-page.sync="page"
+      :page-size="pageSize"
+      layout="total, prev, pager, next"
+      :total="total">
+    </el-pagination>
+
     <el-dialog
       center
       width="40%"
@@ -174,6 +183,7 @@ export default {
       videosForm: {},
       page: 1,
       pageSize: 8,
+      total: 0,
       videosFormRule: {
         title: [
           { required: true, message: '请输入视频标题' },
@@ -209,26 +219,13 @@ export default {
           if (response.data.items.length !== 0) {
             this.isEmpty = false
             this.videosRecords = response.data.items
+            this.total = response.data.meta.count
           } else {
             this.videosRecords = response.data.items
             this.isEmpty = true
           }
         }
       })
-    },
-    deleteData(id) {
-      this.$confirm('确定要删除该视频吗？', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-      }).then(() => {
-        httpDelete(`/meterials/deleteVideo/${this.id}?videoId=${id}`).then((response) => {
-          if (response.status === 201) {
-            this.$message.success('已删除该视频')
-            this.loadData()
-          }
-        })
-      }).catch(() => {})
     },
     save() {
       this.$refs.videosForm.validate((valid) => {
@@ -247,11 +244,27 @@ export default {
             this.dialogFormVisible = false
             this.videosForm = {}
             this.$refs.videosForm.resetFields()
+            this.page = 1
             this.loadData()
           }
         })
         this.loading = false
       })
+    },
+    deleteData(id) {
+      this.$confirm('确定要删除该视频吗？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+      }).then(() => {
+        httpDelete(`/meterials/deleteVideo/${this.id}?videoId=${id}`).then((response) => {
+          if (response.status === 201) {
+            this.$message.success('已删除该视频')
+            this.page = 1
+            this.loadData()
+          }
+        })
+      }).catch(() => {})
     },
     uploadVideo() {
       this.dialogFormVisible = true
@@ -277,6 +290,10 @@ export default {
     },
     handleExceed() {
       this.$message.warning('当前限制上传 1 个视频')
+    },
+    handleCurrentChange(val) {
+      this.page = val
+      this.loadData()
     },
   },
   created() {

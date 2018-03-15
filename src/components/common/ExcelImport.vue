@@ -206,7 +206,7 @@ export default {
     save() {
       const data = this.excelData
       if (!data.length) {
-        this.$message.error('请选择要导入学生的 Excel 文档')
+        this.$message.warning('请选择要导入学生的 Excel 文档')
         return
       }
       this.fullscreenLoading = true

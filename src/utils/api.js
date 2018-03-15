@@ -19,7 +19,7 @@ const onError = (error) => {
   if (status === 404) {
     Message.error(error.response.data)
   } else if (status === 401) {
-    Message.error('权限认证失败或登录过期，请重新登录')
+    Message.warning('权限认证失败或登录过期，请重新登录')
     store.dispatch('TEACHER_LOGOUT')
     router.push({ path: '/login' })
   } else if (status >= 500) {
