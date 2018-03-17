@@ -33,12 +33,13 @@
         </el-col>
         <el-col :span="2">
           <el-button
+            type="info"
             round
             @click="typeSearch">
             分类查询
           </el-button>
         </el-col>
-        <el-col :span="2" style="padding-left:30px;">
+        <el-col :span="2" style="padding-left:40px;">
           <el-button
             round
             @click="clearQuery">
