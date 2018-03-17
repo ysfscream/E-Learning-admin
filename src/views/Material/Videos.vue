@@ -11,25 +11,22 @@
     <div class="check-video">
       <el-row :gutter="20">
         <el-col :span="8">
-          <el-input placeholder="输入视频标题搜索">
-          </el-input>
-        </el-col>
-        <el-col :span="8">
           <e-learn-select
-            v-model="tags"
-            :data="tags"
+            v-model="tag"
+            :data="tag"
             placeholder="选择或输入视频标签来搜索"
             url="/departments/tags">
           </e-learn-select>
         </el-col>
         <el-col :span="2">
           <el-button
+            type="info"
             round
             @click="typeSearch">
             分类查询
           </el-button>
         </el-col>
-        <el-col :span="2" style="padding-left:30px;">
+        <el-col :span="2" style="padding-left:40px;">
           <el-button
             round
             @click="clearQuery">
@@ -50,7 +47,11 @@
                 <a
                   href="javascript:;"
                   @click="$router.push({ path: `/videos/${video.videoId}`,
-                    query: { url: video.video, title: video.title } })">
+                    query: {
+                      url: video.video,
+                      title: video.title,
+                      description: video.description
+                    } })">
                   {{ video.title }}
                 </a>
               </el-tooltip>
@@ -71,7 +72,7 @@
     </el-row>
 
     <el-pagination
-      v-if="!isEmpty"
+      v-if="total>=1"
       @current-change="handleCurrentChange"
       :current-page.sync="page"
       :page-size="pageSize"
@@ -175,7 +176,8 @@ export default {
   },
   data() {
     return {
-      tags: '',
+      tag: '',
+      title: '',
       isEmpty: false,
       loading: false,
       dialogFormVisible: false,
@@ -207,25 +209,52 @@ export default {
     }),
   },
   methods: {
-    typeSearch() {
-
-    },
-    clearQuery() {
-
-    },
     loadData() {
-      httpGet(`/meterials/getVideos/${this.id}?page=${this.page}&pageSize=${this.pageSize}`).then((response) => {
+      httpGet(`/meterials/getVideos/${this.id}?page=${this.page}&pageSize=${this.pageSize}`)
+        .then((response) => {
+          if (response.status === 200) {
+            if (response.data.items.length) {
+              this.isEmpty = false
+              this.videosRecords = response.data.items
+              this.total = response.data.meta.count
+            } else {
+              this.videosRecords = []
+              this.isEmpty = true
+            }
+          }
+        })
+    },
+    typeSearch() {
+      if (!this.title && !this.tag) {
+        this.$message.error('请选择任意一项')
+        return
+      }
+      this.$router.push({
+        path: '/videos',
+        query: {
+          tag: this.tag,
+        },
+      })
+      this.total = 0
+      const url = `/meterials/searchVideo/${this.id}?page=${this.page}&pageSize=${this.pageSize}&tag=${this.tag}`
+      httpGet(url).then((response) => {
         if (response.status === 200) {
-          if (response.data.items.length !== 0) {
+          if (response.data.items.length) {
             this.isEmpty = false
             this.videosRecords = response.data.items
-            this.total = response.data.meta.count
           } else {
-            this.videosRecords = response.data.items
+            this.videosRecords = []
             this.isEmpty = true
           }
         }
       })
+    },
+    clearQuery() {
+      this.$router.push({
+        path: '/videos',
+      })
+      this.tag = ''
+      this.loadData()
     },
     save() {
       this.$refs.videosForm.validate((valid) => {
@@ -329,7 +358,13 @@ export default {
   .video-list {
     .el-card {
       color: #606266;
-      margin-bottom: 40px;
+      margin: 10px 0 40px 0;
+      height: 180px;
+      .text {
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
       &:hover {
         box-shadow: 10px 10px 10px #DCDFE6;
         transition: .3s;

@@ -17,13 +17,13 @@
             <h2><a :href="share.shareLink">{{ share.shareTitle }}</a></h2>
           </template>
           <el-row :gutter="20">
-            <el-col :span="9">
+            <el-col :span="8">
               <el-input v-model="share.shareTitle"></el-input>
             </el-col>
-            <el-col :span="9">
+            <el-col :span="8">
               <el-input v-model="share.shareLink"></el-input>
             </el-col>
-            <el-col :span="4">
+            <el-col :span="8">
               <el-button-group>
                 <el-button
                   size="mini"
