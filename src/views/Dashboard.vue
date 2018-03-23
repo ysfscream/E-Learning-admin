@@ -1,6 +1,6 @@
 <template>
   <div class="dashboard-view">
-    <el-row :gutter="20">
+    <el-row :gutter="30">
       <el-col :span="24">
         <el-card>
           <div slot="header" class="clearfix">
@@ -69,6 +69,35 @@
         </el-card>
       </el-col>
 
+      <el-col :span="12">
+        <el-card>
+          <div slot="header" class="clearfix">
+            <icon-svg
+              class="icon--header"
+              iconID="icon-doc">
+            </icon-svg>
+            <span style="padding-left: 5px;">文档统计</span>
+            <a
+              style="float: right; padding: 7px 0"
+              href="javascript:;"
+              @click="$router.push({ path: '/videos' })">
+              总数：{{ docsCount }} 份
+            </a>
+          </div>
+          <el-row>
+            <el-col :span="24">
+              <e-learn-line
+                chartID="docsType"
+                title="文档分类"
+                name="数量"
+                :dataName="docsName"
+                :dataValue="docsData">
+              </e-learn-line>
+            </el-col>
+          </el-row>
+        </el-card>
+      </el-col>
+
     </el-row>
   </div>
 </template>
@@ -78,6 +107,7 @@
 import IconSvg from '@/components/common/IconSvg'
 import ELearnPie from '@/components/charts/ELearnPie'
 import ELearnChart from '@/components/charts/ELearnChart'
+import ELearnLine from '@/components/charts/ELearnLine'
 
 import { mapState } from 'vuex'
 import { httpGet } from '@/utils/api'
@@ -88,9 +118,11 @@ export default {
     IconSvg,
     ELearnPie,
     ELearnChart,
+    ELearnLine,
   },
   data() {
     return {
+      docsCount: 0,
       videoCount: 0,
       studentCount: 0,
       studentOnlineData: [
@@ -100,6 +132,8 @@ export default {
       videosData: [],
       professionalData: [],
       professionalName: [],
+      docsData: [],
+      docsName: [],
     }
   },
   computed: {
@@ -123,8 +157,16 @@ export default {
         this.videosData = response.data.items.videosData
       })
     },
+    loadDocsData() {
+      httpGet(`/statistics/docsCount/${this.id}`).then((response) => {
+        this.docsCount = response.data.meta.count
+        this.docsData = response.data.items.docsData
+        this.docsName = response.data.items.docsName
+      })
+    },
   },
   created() {
+    this.loadDocsData()
     this.loadVideoData()
     this.loadStudentData()
   },
@@ -143,6 +185,10 @@ export default {
     height: 250px;
   }
   #videosType {
+    width: 100%;
+    height: 250px;
+  }
+  #docsType {
     width: 100%;
     height: 250px;
   }
