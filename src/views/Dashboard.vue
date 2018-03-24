@@ -80,7 +80,7 @@
             <a
               style="float: right; padding: 7px 0"
               href="javascript:;"
-              @click="$router.push({ path: '/videos' })">
+              @click="$router.push({ path: '/docs' })">
               总数：{{ docsCount }} 份
             </a>
           </div>
@@ -176,18 +176,9 @@ export default {
 
 <style lang="scss">
 .dashboard-view {
-  #studentOnline {
-    width: 100%;
-    height: 250px;
-  }
-  #genderRatio {
-    width: 100%;
-    height: 250px;
-  }
-  #videosType {
-    width: 100%;
-    height: 250px;
-  }
+  #studentOnline,
+  #genderRatio,
+  #videosType,
   #docsType {
     width: 100%;
     height: 250px;

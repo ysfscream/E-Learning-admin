@@ -1,20 +1,20 @@
 <template>
-  <div class="docs-view">
-    <e-learn-header title="这些是您上传的文档资源">
+  <div class="ppt-view">
+    <e-learn-header title="这些是您上传的课件资源">
       <el-button
         slot="createBtn"
-        @click="uploadDoc"
+        @click="uploadPPT"
         type="primary">
-        上传新的文档
+        上传新的课件
       </el-button>
     </e-learn-header>
-    <div class="check-docs">
+    <div class="check-ppt">
       <el-row :gutter="20">
         <el-col :span="8">
           <e-learn-select
             v-model="tag"
             :data="tag"
-            placeholder="选择或输入文档标签来搜索"
+            placeholder="选择或输入课件标签来搜索"
             url="/departments/tags">
           </e-learn-select>
         </el-col>
@@ -42,21 +42,21 @@
       <el-table
         v-loading="loading"
         ref="multipleTable"
-        :data="docsRecords"
+        :data="pptRecords"
         tooltip-effect="dark"
         style="width: 100%">
         <el-table-column
-          label="文档标题"
+          label="课件标题"
           prop="title">
         </el-table-column>
         <el-table-column
-          label="文档标签">
+          label="课件标签">
           <template slot-scope="scope">
             <el-tag type="success">{{ scope.row.tag }}</el-tag>
           </template>
         </el-table-column>
         <el-table-column
-          label="文档描述"
+          label="课件描述"
           prop="description">
         </el-table-column>
         <el-table-column
@@ -75,7 +75,7 @@
                 size="mini"
                 type="primary"
                 @click="$router.push({
-                  path: `/docs/${scope.row.docsId}`, query: { type: 'edit' }
+                  path: `/ppt/${scope.row.pptId}`, query: { type: 'edit' }
                 })">
                 <i class="fas fa-edit"></i>
               </el-button>
@@ -83,7 +83,7 @@
                 size="mini"
                 type="danger"
                 round
-                @click="deleteData(scope.row.docsId)">
+                @click="deleteData(scope.row.pptId)">
                 <i class="fas fa-trash-alt"></i>
               </el-button>
             </el-button-group>
@@ -107,40 +107,39 @@
       :visible="dialogFormVisible">
       <el-row :gutter="20">
         <el-form
-          ref="docsForm"
-          :model="docsForm"
-          :rules="docsFormRule">
+          ref="pptForm"
+          :model="pptForm"
+          :rules="pptFormRule">
           <el-col :span="12">
-            <el-form-item label="文档标题" prop="title">
-              <el-input v-model="docsForm.title" placeholder="请输入文档标题">
+            <el-form-item label="课件标题" prop="title">
+              <el-input v-model="pptForm.title" placeholder="请输入课件标题">
               </el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="文档类型标签" prop="tag">
+            <el-form-item label="课件标签" prop="tag">
               <e-learn-select
-                v-model="docsForm.tag"
-                :data="docsForm.tag"
-                placeholder="选择或输入文档标签"
+                v-model="pptForm.tag"
+                :data="pptForm.tag"
                 url="/departments/tags">
               </e-learn-select>
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item label="文档描述" prop="description">
+            <el-form-item label="课件描述" prop="description">
               <el-input type="textarea"
-                v-model="docsForm.description" placeholder="选择或输入文档描述">
+                v-model="pptForm.description" placeholder="例如：大三-安卓开发-李老师">
               </el-input>
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item label="文档文件" prop="video">
+            <el-form-item label="课件文件" prop="ppt">
               <el-upload
-                class="upload-docs"
+                class="upload-ppt"
                 drag
-                action="/e_api/upload/image"
-                name="image"
-                accept="application/msword,application/pdf"
+                action="/e_api/upload/ppt"
+                name="ppt"
+                accept="application/vnd.ms-powerpoint"
                 :limit="1"
                 :on-exceed="handleExceed"
                 :on-success="uploadSccuess"
@@ -149,9 +148,9 @@
                 <i class="el-icon-upload"></i>
                 <div class="el-upload__text">
                   <i class="fas fa-book"></i>
-                    将文档拖到此或 <em>点击</em> 上传到服务器
+                    将课件拖到此或 <em>点击</em> 上传到服务器
                   <div class="el-upload__tip" slot="tip">
-                    --可以上传PDF、word文件，刷新页面将自动取消上传--
+                    --可以上传PPT文件，刷新页面将自动取消上传--
                   </div>
                 </div>
               </el-upload>
@@ -188,7 +187,7 @@ import { mapState } from 'vuex'
 import { httpGet, httpPut, httpDelete } from '@/utils/api'
 
 export default {
-  name: 'docs-view',
+  name: 'ppt-view',
   components: {
     ELearnHeader,
     ELearnNull,
@@ -202,22 +201,22 @@ export default {
       loading: false,
       dialogFormVisible: false,
       dialogVideoVisible: 0,
-      docsForm: {},
+      pptForm: {},
       page: 1,
       pageSize: 8,
       total: 0,
-      docsFormRule: {
+      pptFormRule: {
         title: [
-          { required: true, message: '请输入文档标题' },
+          { required: true, message: '请输入课件标题' },
         ],
         tag: [
-          { required: true, message: '请选择该文档的类型' },
+          { required: true, message: '请输入该课件的课程名' },
         ],
         description: [
-          { required: true, message: '请描述该文档' },
+          { required: true, message: '请描述该课件' },
         ],
       },
-      docsRecords: [],
+      pptRecords: [],
     }
   },
   computed: {
@@ -228,17 +227,17 @@ export default {
   methods: {
     loadData() {
       this.loading = true
-      httpGet(`/meterials/getDocs/${this.id}?page=${this.page}&pageSize=${this.pageSize}`)
+      httpGet(`/meterials/getPPT/${this.id}?page=${this.page}&pageSize=${this.pageSize}`)
         .then((response) => {
           if (response.status === 200) {
             if (response.data.items.length) {
               this.isEmpty = false
-              this.docsRecords = response.data.items
+              this.pptRecords = response.data.items
               this.total = response.data.meta.count
               this.loading = false
             } else {
               this.loading = false
-              this.docsRecords = []
+              this.pptRecords = []
               this.isEmpty = true
             }
           }
@@ -252,20 +251,20 @@ export default {
         return
       }
       this.$router.push({
-        path: '/docs',
+        path: '/ppt',
         query: {
           tag: this.tag,
         },
       })
       this.total = 0
-      const url = `/meterials/searchDocs/${this.id}?page=${this.page}&pageSize=${this.pageSize}&tag=${this.tag}`
+      const url = `/meterials/searchppt/${this.id}?page=${this.page}&pageSize=${this.pageSize}&tag=${this.tag}`
       httpGet(url).then((response) => {
         if (response.status === 200) {
           if (response.data.items.length) {
             this.isEmpty = false
-            this.docsRecords = response.data.items
+            this.pptRecords = response.data.items
           } else {
-            this.docsRecords = []
+            this.pptRecords = []
             this.isEmpty = true
           }
         }
@@ -273,28 +272,28 @@ export default {
     },
     clearQuery() {
       this.$router.push({
-        path: '/docs',
+        path: '/ppt',
       })
       this.tag = ''
       this.loadData()
     },
     save() {
-      this.$refs.docsForm.validate((valid) => {
+      this.$refs.pptForm.validate((valid) => {
         if (!valid) {
           return
         }
-        if (!this.docsForm.doc) {
+        if (!this.pptForm.ppt) {
           this.$message.error('请上传资源文件')
           return
         }
         this.loading = true
-        const data = this.docsForm
-        httpPut(`/meterials/uploadDocs/${this.id}`, data).then((response) => {
+        const data = this.pptForm
+        httpPut(`/meterials/uploadPPT/${this.id}`, data).then((response) => {
           if (response.status === 201) {
-            this.$message.success('文档上传成功')
+            this.$message.success('课件上传成功')
             this.dialogFormVisible = false
-            this.docsForm = {}
-            this.$refs.docsForm.resetFields()
+            this.pptForm = {}
+            this.$refs.pptForm.resetFields()
             this.page = 1
             this.loadData()
           }
@@ -303,21 +302,21 @@ export default {
       })
     },
     deleteData(id) {
-      this.$confirm('确定要删除该文档吗？', '提示', {
+      this.$confirm('确定要删除该课件吗？', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning',
       }).then(() => {
-        httpDelete(`/meterials/deleteDocs/${this.id}?docsId=${id}`).then((response) => {
+        httpDelete(`/meterials/deletePPT/${this.id}?pptId=${id}`).then((response) => {
           if (response.status === 201) {
-            this.$message.success('已删除该文档')
+            this.$message.success('已删除该课件')
             this.page = 1
             this.loadData()
           }
         })
       }).catch(() => {})
     },
-    uploadDoc() {
+    uploadPPT() {
       this.dialogFormVisible = true
     },
     beforeAvatarUpload(file) {
@@ -329,7 +328,7 @@ export default {
       return fileSize
     },
     uploadSccuess(file) {
-      this.docsForm.doc = file.filename
+      this.pptForm.ppt = file.filename
     },
     uploadError() {
       this.$message.error('上传失败')
@@ -340,16 +339,16 @@ export default {
       }).catch(() => {})
     },
     handleExceed() {
-      this.$message.warning('当前限制上传 1 个文档')
+      this.$message.warning('当前限制上传 1 个课件')
     },
     handleCurrentChange(val) {
       this.page = val
       this.loadData()
     },
-    downloadFile(docs) {
+    downloadFile(ppt) {
       const aTag = document.createElement('a')
       aTag.download = true
-      aTag.href = docs.doc
+      aTag.href = ppt.ppt
       aTag.click()
     },
   },
@@ -361,7 +360,7 @@ export default {
 
 
 <style lang="scss">
-.docs-view {
+.ppt-view {
   .el-row {
     .upload-videos {
       text-align: center;
@@ -375,7 +374,7 @@ export default {
   .delete-all {
     margin: 10px 0 10px 0;
   }
-  .check-docs {
+  .check-ppt {
     margin: 30px 0 30px 0;
   }
   .el-upload-dragger {
@@ -386,7 +385,7 @@ export default {
     margin: 0px 0 -20px 0;
     color: #F56C6C;
   }
-  .docs-list {
+  .ppt-list {
     .el-card {
       color: #606266;
       margin: 10px 0 40px 0;

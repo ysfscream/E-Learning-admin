@@ -1,31 +1,31 @@
 <template>
-  <div class="docs-details-view">
+  <div class="ppt-details-view">
     <el-card class="box-card">
       <div slot="header" class="clearfix">
         <el-breadcrumb separator="/">
-          <el-breadcrumb-item :to="{ path: '/docs' }">文档</el-breadcrumb-item>
+          <el-breadcrumb-item :to="{ path: '/ppt' }">课件</el-breadcrumb-item>
           <el-breadcrumb-item>编辑</el-breadcrumb-item>
         </el-breadcrumb>
       </div>
       <el-row :gutter="20">
         <el-col :span="24">
           <el-form
-            ref="docsForm"
-            :rules="docsFormRule"
-            :model="docs">
-            <el-form-item label="文档标题" prop="title">
-              <el-input v-model="docs.title">
+            ref="pptForm"
+            :rules="pptFormRule"
+            :model="ppt">
+            <el-form-item label="课件标题" prop="title">
+              <el-input v-model="ppt.title">
               </el-input>
             </el-form-item>
-            <el-form-item label="文档标签" prop="tag">
+            <el-form-item label="课件标签" prop="tag">
               <e-learn-select
-                v-model="docs.tag"
-                :data="docs.tag"
+                v-model="ppt.tag"
+                :data="ppt.tag"
                 url="/departments/tags">
               </e-learn-select>
             </el-form-item>
-            <el-form-item label="文档描述" prop="description">
-              <el-input type="textarea" v-model="docs.description">
+            <el-form-item label="课件描述" prop="description">
+              <el-input type="textarea" v-model="ppt.description" placeholder="例如：大三-安卓开发-李老师">
               </el-input>
             </el-form-item>
           </el-form>
@@ -48,29 +48,28 @@ import { mapState } from 'vuex'
 import { httpGet, httpPut } from '@/utils/api'
 
 export default {
-  name: 'docs-details-view',
+  name: 'ppt-details-view',
   components: {
     ELearnSelect,
   },
   data() {
     return {
-      docs: {},
-      docsFormRule: {
+      ppt: {},
+      pptFormRule: {
         title: [
-          { required: true, message: '请输入文档标题' },
+          { required: true, message: '请输入课件标题' },
         ],
         tag: [
-          { required: true, message: '请选择该文档的类型' },
+          { required: true, message: '请输入该课件的课程名' },
         ],
         description: [
-          { required: true, message: '请描述该文档' },
+          { required: true, message: '请描述该课件' },
         ],
       },
-
     }
   },
   computed: {
-    docsId() {
+    pptId() {
       return this.$route.params.id
     },
     ...mapState({
@@ -79,20 +78,20 @@ export default {
   },
   methods: {
     loadData() {
-      httpGet(`/meterials/getDocsInfo/${this.id}?docsId=${this.docsId}`).then((response) => {
-        this.docs = response.data.items
+      httpGet(`/meterials/getPPTInfo/${this.id}?pptId=${this.pptId}`).then((response) => {
+        this.ppt = response.data.items
       })
     },
     save() {
-      this.$refs.docsForm.validate((valid) => {
+      this.$refs.pptForm.validate((valid) => {
         if (!valid) {
           return
         }
-        const data = this.docs
-        httpPut(`/meterials/updateDocs/${this.id}`, data).then((response) => {
+        const data = this.ppt
+        httpPut(`/meterials/updatePPT/${this.id}`, data).then((response) => {
           if (response.data.status === 201) {
             this.$message.success('更新成功')
-            this.$router.push({ path: '/docs' })
+            this.$router.push({ path: '/ppt' })
           }
         })
       })
@@ -105,7 +104,7 @@ export default {
 </script>
 
 <style lang="scss">
-.docs-details-view {
+.ppt-details-view {
   .el-card {
     color: #606266;
     .video-description {

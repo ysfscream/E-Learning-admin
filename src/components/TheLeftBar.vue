@@ -54,10 +54,10 @@
           <i class="fas fa-comment-alt"></i>
           <span>消息管理</span>
         </template>
-        <el-menu-item index="/ppt">
+        <el-menu-item index="/comment">
           评论
         </el-menu-item>
-        <el-menu-item index="/ppt">
+        <el-menu-item index="/reply">
           回复
         </el-menu-item>
       </el-submenu>
