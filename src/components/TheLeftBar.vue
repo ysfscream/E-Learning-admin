@@ -16,9 +16,7 @@
       <el-menu-item index="/">
         <template slot="title">
           <i class="fas fa-home"></i>
-          <touch-ripple>
-            <span>首页</span>
-          </touch-ripple>
+          <span>首页</span>
         </template>
       </el-menu-item>
       <el-submenu index="1">
@@ -27,14 +25,10 @@
           <span>学生管理</span>
         </template>
         <el-menu-item index="/students">
-          <touch-ripple>
-            学生
-          </touch-ripple>
+          学生
         </el-menu-item>
-        <el-menu-item index="/docs">
-          <touch-ripple>
-            作业
-          </touch-ripple>
+        <el-menu-item index="/homework">
+          作业
         </el-menu-item>
       </el-submenu>
       <el-submenu index="2">
@@ -43,24 +37,16 @@
           <span>资源管理</span>
         </template>
         <el-menu-item index="/ppt">
-          <touch-ripple>
-            课件
-          </touch-ripple>
+          课件
         </el-menu-item>
         <el-menu-item index="/docs">
-          <touch-ripple>
-            文档
-          </touch-ripple>
+          文档
         </el-menu-item>
         <el-menu-item index="/videos">
-          <touch-ripple>
-            视频
-          </touch-ripple>
+          视频
         </el-menu-item>
         <el-menu-item index="/shares">
-          <touch-ripple>
-            分享
-          </touch-ripple>
+          分享
         </el-menu-item>
       </el-submenu>
       <el-submenu index="3">
@@ -68,15 +54,11 @@
           <i class="fas fa-comment-alt"></i>
           <span>消息管理</span>
         </template>
-        <el-menu-item index="/ppt">
-          <touch-ripple>
-            评论
-          </touch-ripple>
+        <el-menu-item index="/comment">
+          评论
         </el-menu-item>
-        <el-menu-item index="/ppt">
-          <touch-ripple>
-            回复
-          </touch-ripple>
+        <el-menu-item index="/reply">
+          回复
         </el-menu-item>
       </el-submenu>
       <el-submenu index="4">
@@ -85,19 +67,13 @@
           <span>系别管理</span>
         </template>
         <el-menu-item index="/homework">
-          <touch-ripple>
-            系别
-          </touch-ripple>
+          系别
         </el-menu-item>
         <el-menu-item index="/homework">
-          <touch-ripple>
-            专业
-          </touch-ripple>
+          专业
         </el-menu-item>
         <el-menu-item index="/homework">
-          <touch-ripple>
-            班级
-          </touch-ripple>
+          班级
         </el-menu-item>
       </el-submenu>
     </el-menu>
@@ -106,13 +82,11 @@
 
 
 <script>
-import { touchRipple } from 'vue-touch-ripple'
 import IconSvg from './common/IconSvg'
 
 export default {
   name: 'left-bar-view',
   components: {
-    touchRipple,
     IconSvg,
   },
   computed: {
@@ -126,14 +100,6 @@ export default {
 
 <style lang="scss" scoped>
 .left-bar-view {
-  .v-touch-ripple {
-    position: relative;
-    right: 100px;
-    display: inline-block;
-    width: 50%;
-    height: 100%;
-    padding: 0 100px 0 100px;
-  }
   .left-bar {
     position: fixed;
     top: 0;

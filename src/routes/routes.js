@@ -5,6 +5,10 @@ const childRoutes = [
   { path: '/shares', component: () => import('@/views/Material/Shares'), meta: { requiresAuth: true } },
   { path: '/videos', component: () => import('@/views/Material/Videos'), meta: { requiresAuth: true } },
   { path: '/videos/:id', component: () => import('@/views/Material/VideoDtails'), meta: { requiresAuth: true } },
+  { path: '/docs', component: () => import('@/views/Material/Docs'), meta: { requiresAuth: true } },
+  { path: '/docs/:id', component: () => import('@/views/Material/DocsDetails'), meta: { requiresAuth: true } },
+  { path: '/ppt', component: () => import('@/views/Material/PPT'), meta: { requiresAuth: true } },
+  { path: '/ppt/:id', component: () => import('@/views/Material/PPTDetails'), meta: { requiresAuth: true } },
 ]
 
 const routes = [

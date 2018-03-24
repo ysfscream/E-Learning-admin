@@ -53,21 +53,21 @@ export default {
           data: [this.name],
         },
         xAxis: {
+          type: 'category',
+          boundaryGap: false,
           data: this.dataName,
           axisLabel: {
-            // X轴倾斜角度
-            // rotate: -10,
-            //  如果文字太多，默认是间隔显示，设置为0，标示全部显示
             interval: 0,
           },
         },
-        yAxis: {},
+        yAxis: {
+          ype: 'value',
+        },
         series: [{
           name: this.name,
-          type: 'bar',
-          //  设置柱的宽度，要是数据太少，柱子太宽不美观~
-          barWidth: 40,
           data: this.dataValue,
+          type: 'line',
+          areaStyle: {},
         }],
       }
       // 使用刚指定的配置项和数据显示图表。

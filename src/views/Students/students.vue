@@ -48,7 +48,9 @@
         </el-col>
       </el-row>
     </div>
+
     <e-learn-null v-if="isEmpty"></e-learn-null>
+
     <el-card v-if="!isEmpty">
       <el-button
         v-if="isDeleteAll"
@@ -122,9 +124,9 @@
               <el-button
                 size="mini"
                 type="danger"
-                icon="el-icon-close"
                 round
                 @click="deleteData(scope.row.studentID)">
+                <i class="fas fa-trash-alt"></i>
               </el-button>
             </el-tooltip>
           </template>

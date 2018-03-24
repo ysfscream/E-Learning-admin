@@ -1,20 +1,20 @@
 <template>
-  <div class="video-view">
-    <e-learn-header title="这些是您上传的视频资源">
+  <div class="ppt-view">
+    <e-learn-header title="这些是您上传的课件资源">
       <el-button
         slot="createBtn"
-        @click="uploadVideo"
+        @click="uploadPPT"
         type="primary">
-        上传新的视频
+        上传新的课件
       </el-button>
     </e-learn-header>
-    <div class="check-video">
+    <div class="check-ppt">
       <el-row :gutter="20">
         <el-col :span="8">
           <e-learn-select
             v-model="tag"
             :data="tag"
-            placeholder="选择或输入视频标签来搜索"
+            placeholder="选择或输入课件标签来搜索"
             url="/departments/tags">
           </e-learn-select>
         </el-col>
@@ -38,47 +38,67 @@
 
     <e-learn-null v-if="isEmpty"></e-learn-null>
 
-    <el-row :gutter="30" class="video-list">
-      <el-col :span="6" v-for="(video, index) in videosRecords" :key="index">
-        <el-card class="box-card">
-          <div slot="header" class="clearfix">
-            <span>
-              <el-tooltip effect="dark" content="点击查看详情" placement="top-start">
-                <a
-                  href="javascript:;"
-                  @click="$router.push({ path: `/videos/${video.videoId}`,
-                    query: {
-                      url: video.video,
-                      title: video.title,
-                      description: video.description
-                    } })">
-                  {{ video.title }}
-                </a>
-              </el-tooltip>
-            </span>
-            <el-button
-              style="float: right; padding: 3px 0"
-              type="text"
-              @click="deleteData(video.videoId)">
-              删除
-            </el-button>
-          </div>
-          <div class="text item">
-            {{ video.description }}
-          </div>
-          <el-tag type="success">{{ video.tag }}</el-tag>
-        </el-card>
-      </el-col>
-    </el-row>
-
-    <el-pagination
-      v-if="total>=1"
-      @current-change="handleCurrentChange"
-      :current-page.sync="page"
-      :page-size="pageSize"
-      layout="total, prev, pager, next"
-      :total="total">
-    </el-pagination>
+    <el-card v-if="!isEmpty">
+      <el-table
+        v-loading="loading"
+        ref="multipleTable"
+        :data="pptRecords"
+        tooltip-effect="dark"
+        style="width: 100%">
+        <el-table-column
+          label="课件标题"
+          prop="title">
+        </el-table-column>
+        <el-table-column
+          label="课件标签">
+          <template slot-scope="scope">
+            <el-tag type="success">{{ scope.row.tag }}</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="课件描述"
+          prop="description">
+        </el-table-column>
+        <el-table-column
+          label="操作">
+          <template slot-scope="scope">
+            <el-button-group>
+              <el-button
+                round
+                size="mini"
+                type="success"
+                @click="downloadFile(scope.row)">
+                <i class="fas fa-download"></i>
+              </el-button>
+              <el-button
+                round
+                size="mini"
+                type="primary"
+                @click="$router.push({
+                  path: `/ppt/${scope.row.pptId}`, query: { type: 'edit' }
+                })">
+                <i class="fas fa-edit"></i>
+              </el-button>
+              <el-button
+                size="mini"
+                type="danger"
+                round
+                @click="deleteData(scope.row.pptId)">
+                <i class="fas fa-trash-alt"></i>
+              </el-button>
+            </el-button-group>
+          </template>
+        </el-table-column>
+      </el-table>
+      <el-pagination
+        v-if="total>=1"
+        @current-change="handleCurrentChange"
+        :current-page.sync="page"
+        :page-size="pageSize"
+        layout="total, prev, pager, next"
+        :total="total">
+      </el-pagination>
+    </el-card>
 
     <el-dialog
       center
@@ -87,40 +107,39 @@
       :visible="dialogFormVisible">
       <el-row :gutter="20">
         <el-form
-          ref="videosForm"
-          :model="videosForm"
-          :rules="videosFormRule">
+          ref="pptForm"
+          :model="pptForm"
+          :rules="pptFormRule">
           <el-col :span="12">
-            <el-form-item label="视频标题" prop="title">
-              <el-input v-model="videosForm.title" placeholder="请输入视频标题">
+            <el-form-item label="课件标题" prop="title">
+              <el-input v-model="pptForm.title" placeholder="请输入课件标题">
               </el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="视频类型标签" prop="tag">
+            <el-form-item label="课件标签" prop="tag">
               <e-learn-select
-                v-model="videosForm.tag"
-                :data="videosForm.tag"
-                placeholder="选择或输入视频标签"
+                v-model="pptForm.tag"
+                :data="pptForm.tag"
                 url="/departments/tags">
               </e-learn-select>
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item label="视频描述" prop="description">
+            <el-form-item label="课件描述" prop="description">
               <el-input type="textarea"
-                v-model="videosForm.description" placeholder="选择或输入视频描述">
+                v-model="pptForm.description" placeholder="例如：大三-安卓开发-李老师">
               </el-input>
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item label="视频文件" prop="video">
+            <el-form-item label="课件文件" prop="ppt">
               <el-upload
-                class="upload-video"
+                class="upload-ppt"
                 drag
-                action="/e_api/upload/video"
-                name="video"
-                accept="video/mp4"
+                action="/e_api/upload/ppt"
+                name="ppt"
+                accept="application/vnd.ms-powerpoint"
                 :limit="1"
                 :on-exceed="handleExceed"
                 :on-success="uploadSccuess"
@@ -128,10 +147,10 @@
                 :before-upload="beforeAvatarUpload">
                 <i class="el-icon-upload"></i>
                 <div class="el-upload__text">
-                  <i class="far fa-file-video"></i>
-                    将视频拖到此或 <em>点击</em> 上传到服务器
+                  <i class="fas fa-book"></i>
+                    将课件拖到此或 <em>点击</em> 上传到服务器
                   <div class="el-upload__tip" slot="tip">
-                    --只能上传mp4文件，且不超过500MB，刷新页面将自动取消上传--
+                    --可以上传PPT文件，刷新页面将自动取消上传--
                   </div>
                 </div>
               </el-upload>
@@ -168,7 +187,7 @@ import { mapState } from 'vuex'
 import { httpGet, httpPut, httpDelete } from '@/utils/api'
 
 export default {
-  name: 'video-view',
+  name: 'ppt-view',
   components: {
     ELearnHeader,
     ELearnNull,
@@ -182,46 +201,48 @@ export default {
       loading: false,
       dialogFormVisible: false,
       dialogVideoVisible: 0,
-      videosForm: {},
+      pptForm: {},
       page: 1,
       pageSize: 8,
       total: 0,
-      videosFormRule: {
+      pptFormRule: {
         title: [
-          { required: true, message: '请输入视频标题' },
+          { required: true, message: '请输入课件标题' },
         ],
         tag: [
-          { required: true, message: '请选择该视频的类型' },
+          { required: true, message: '请输入该课件的课程名' },
         ],
         description: [
-          { required: true, message: '请描述该视频' },
+          { required: true, message: '请描述该课件' },
         ],
       },
-      videosRecords: [],
+      pptRecords: [],
     }
   },
   computed: {
     ...mapState({
       id: state => state.account.teacher.id,
     }),
-    ...mapState({
-      token: state => state.account.teacher.token,
-    }),
   },
   methods: {
     loadData() {
-      httpGet(`/meterials/getVideos/${this.id}?page=${this.page}&pageSize=${this.pageSize}`)
+      this.loading = true
+      httpGet(`/meterials/getPPT/${this.id}?page=${this.page}&pageSize=${this.pageSize}`)
         .then((response) => {
           if (response.status === 200) {
             if (response.data.items.length) {
               this.isEmpty = false
-              this.videosRecords = response.data.items
+              this.pptRecords = response.data.items
               this.total = response.data.meta.count
+              this.loading = false
             } else {
-              this.videosRecords = []
+              this.loading = false
+              this.pptRecords = []
               this.isEmpty = true
             }
           }
+        }).catch(() => {
+          this.loading = false
         })
     },
     typeSearch() {
@@ -230,20 +251,20 @@ export default {
         return
       }
       this.$router.push({
-        path: '/videos',
+        path: '/ppt',
         query: {
           tag: this.tag,
         },
       })
       this.total = 0
-      const url = `/meterials/searchVideo/${this.id}?page=${this.page}&pageSize=${this.pageSize}&tag=${this.tag}`
+      const url = `/meterials/searchppt/${this.id}?page=${this.page}&pageSize=${this.pageSize}&tag=${this.tag}`
       httpGet(url).then((response) => {
         if (response.status === 200) {
           if (response.data.items.length) {
             this.isEmpty = false
-            this.videosRecords = response.data.items
+            this.pptRecords = response.data.items
           } else {
-            this.videosRecords = []
+            this.pptRecords = []
             this.isEmpty = true
           }
         }
@@ -251,28 +272,28 @@ export default {
     },
     clearQuery() {
       this.$router.push({
-        path: '/videos',
+        path: '/ppt',
       })
       this.tag = ''
       this.loadData()
     },
     save() {
-      this.$refs.videosForm.validate((valid) => {
+      this.$refs.pptForm.validate((valid) => {
         if (!valid) {
           return
         }
-        if (!this.videosForm.video) {
+        if (!this.pptForm.ppt) {
           this.$message.error('请上传资源文件')
           return
         }
         this.loading = true
-        const data = this.videosForm
-        httpPut(`/meterials/uploadVideo/${this.id}`, data).then((response) => {
+        const data = this.pptForm
+        httpPut(`/meterials/uploadPPT/${this.id}`, data).then((response) => {
           if (response.status === 201) {
-            this.$message.success('视频上传成功')
+            this.$message.success('课件上传成功')
             this.dialogFormVisible = false
-            this.videosForm = {}
-            this.$refs.videosForm.resetFields()
+            this.pptForm = {}
+            this.$refs.pptForm.resetFields()
             this.page = 1
             this.loadData()
           }
@@ -281,21 +302,21 @@ export default {
       })
     },
     deleteData(id) {
-      this.$confirm('确定要删除该视频吗？', '提示', {
+      this.$confirm('确定要删除该课件吗？', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning',
       }).then(() => {
-        httpDelete(`/meterials/deleteVideo/${this.id}?videoId=${id}`).then((response) => {
+        httpDelete(`/meterials/deletePPT/${this.id}?pptId=${id}`).then((response) => {
           if (response.status === 201) {
-            this.$message.success('已删除该视频')
+            this.$message.success('已删除该课件')
             this.page = 1
             this.loadData()
           }
         })
       }).catch(() => {})
     },
-    uploadVideo() {
+    uploadPPT() {
       this.dialogFormVisible = true
     },
     beforeAvatarUpload(file) {
@@ -307,7 +328,7 @@ export default {
       return fileSize
     },
     uploadSccuess(file) {
-      this.videosForm.video = file.filename
+      this.pptForm.ppt = file.filename
     },
     uploadError() {
       this.$message.error('上传失败')
@@ -318,11 +339,17 @@ export default {
       }).catch(() => {})
     },
     handleExceed() {
-      this.$message.warning('当前限制上传 1 个视频')
+      this.$message.warning('当前限制上传 1 个课件')
     },
     handleCurrentChange(val) {
       this.page = val
       this.loadData()
+    },
+    downloadFile(ppt) {
+      const aTag = document.createElement('a')
+      aTag.download = true
+      aTag.href = ppt.ppt
+      aTag.click()
     },
   },
   created() {
@@ -333,7 +360,7 @@ export default {
 
 
 <style lang="scss">
-.video-view {
+.ppt-view {
   .el-row {
     .upload-videos {
       text-align: center;
@@ -344,7 +371,10 @@ export default {
     box-sizing: border-box;
     margin-top: 10px;
   }
-  .check-video {
+  .delete-all {
+    margin: 10px 0 10px 0;
+  }
+  .check-ppt {
     margin: 30px 0 30px 0;
   }
   .el-upload-dragger {
@@ -355,7 +385,7 @@ export default {
     margin: 0px 0 -20px 0;
     color: #F56C6C;
   }
-  .video-list {
+  .ppt-list {
     .el-card {
       color: #606266;
       margin: 10px 0 40px 0;
