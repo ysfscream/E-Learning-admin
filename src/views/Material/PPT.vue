@@ -147,7 +147,7 @@
                 :before-upload="beforeAvatarUpload">
                 <i class="el-icon-upload"></i>
                 <div class="el-upload__text">
-                  <i class="fas fa-book"></i>
+                  <i class="fas fa-file-powerpoint"></i>
                     将课件拖到此或 <em>点击</em> 上传到服务器
                   <div class="el-upload__tip" slot="tip">
                     --可以上传PPT文件，刷新页面将自动取消上传--
