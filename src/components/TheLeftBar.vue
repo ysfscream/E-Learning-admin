@@ -66,13 +66,13 @@
           <i class="fas fa-sitemap"></i>
           <span>系别管理</span>
         </template>
-        <el-menu-item index="/homework">
+        <el-menu-item index="/departments">
           系别
         </el-menu-item>
-        <el-menu-item index="/homework">
+        <el-menu-item index="/professions">
           专业
         </el-menu-item>
-        <el-menu-item index="/homework">
+        <el-menu-item index="/classes">
           班级
         </el-menu-item>
       </el-submenu>
