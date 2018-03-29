@@ -12,7 +12,6 @@ const childRoutes = [
   { path: '/ppt/:id', component: () => import('@/views/Material/PPTDetails'), meta: { requiresAuth: true } },
   { path: '/departments', component: () => import('@/views/Departments/Departments'), meta: { requiresAuth: true } },
   { path: '/professions', component: () => import('@/views/Departments/Professions'), meta: { requiresAuth: true } },
-  { path: '/classes', component: () => import('@/views/Departments/Classes'), meta: { requiresAuth: true } },
 ]
 
 const routes = [

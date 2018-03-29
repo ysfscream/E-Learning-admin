@@ -53,7 +53,7 @@
                   v-model="studentForm.professional"
                   :data="studentForm.professional"
                   :disabled="!isEdit"
-                  url="/departments/professional">
+                  url="/departments/professions">
                 </e-learn-select>
               </el-form-item>
             </el-col>
@@ -217,7 +217,7 @@ export default {
       }).then(() => {
         httpPut(`/students/resetPassword/${id}`, data).then((response) => {
           if (response.data.status === 201) {
-            this.$message.success('密码成功重置')
+            this.$message.success('密码成功重置为123456')
             this.$router.push({ path: '/students' })
           }
         })
@@ -234,6 +234,7 @@ export default {
 <style lang="scss">
 .student-details-view {
   .box-card {
+    margin-bottom: 40px;
     .clearfix {
       span {
         color: #606266;
@@ -241,7 +242,7 @@ export default {
     }
   }
   .operBtn {
-    margin: 20px 60px 50px 0;
+    margin: 0px 60px 50px 0;
     float: right;
   }
 }

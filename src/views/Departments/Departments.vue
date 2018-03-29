@@ -143,6 +143,7 @@ export default {
 .departments-view {
   .el-card {
     margin: 30px 0 30px 0;
+    color: #606266;
     .item {
       padding: 20px 0;
       border-bottom: 1px solid #E4E7ED;

@@ -14,7 +14,7 @@
           v-for="share in sharesRecords"
           :key="share.shareId">
           <template slot="title">
-            <h2><a :href="share.shareLink">{{ share.shareTitle }}</a></h2>
+            <h2><a :href="share.shareLink" target="_blank">{{ share.shareTitle }}</a></h2>
           </template>
           <el-row :gutter="20">
             <el-col :span="8">
