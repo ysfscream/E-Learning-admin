@@ -1,8 +1,6 @@
 import ElementUI from 'element-ui'
 import '@/assets/scss/e-learning-variables.scss'
 
-import 'vue-touch-ripple/dist/vue-touch-ripple.css'
-
 import router from '@/routes'
 import store from '@/store'
 

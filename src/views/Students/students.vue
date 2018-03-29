@@ -20,7 +20,7 @@
             v-model="professional"
             :data="professional"
             placeholder="选择专业或输入专业搜索"
-            url="/departments/professional">
+            url="/departments/professions">
           </e-learn-select>
         </el-col>
         <el-col :span="8">

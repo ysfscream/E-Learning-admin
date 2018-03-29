@@ -72,9 +72,6 @@
         <el-menu-item index="/professions">
           专业
         </el-menu-item>
-        <el-menu-item index="/classes">
-          班级
-        </el-menu-item>
       </el-submenu>
     </el-menu>
   </div>
