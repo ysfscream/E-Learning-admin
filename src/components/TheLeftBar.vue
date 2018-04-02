@@ -27,9 +27,6 @@
         <el-menu-item index="/students">
           学生
         </el-menu-item>
-        <el-menu-item index="/homework">
-          作业
-        </el-menu-item>
       </el-submenu>
       <el-submenu index="2">
         <template slot="title">
@@ -47,6 +44,9 @@
         </el-menu-item>
         <el-menu-item index="/shares">
           分享
+        </el-menu-item>
+        <el-menu-item index="/slideshow">
+          轮播图
         </el-menu-item>
       </el-submenu>
       <el-submenu index="3">
