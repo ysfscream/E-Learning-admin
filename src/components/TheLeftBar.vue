@@ -45,22 +45,22 @@
         <el-menu-item index="/shares">
           分享
         </el-menu-item>
-        <el-menu-item index="/slideshow">
-          轮播图
-        </el-menu-item>
+        <!-- <el-menu-item index="/slideshow"> -->
+        <!--   轮播图 -->
+        <!-- </el-menu-item> -->
       </el-submenu>
-      <el-submenu index="3">
-        <template slot="title">
-          <i class="fas fa-comment-alt"></i>
-          <span>消息管理</span>
-        </template>
-        <el-menu-item index="/comment">
-          评论
-        </el-menu-item>
-        <el-menu-item index="/reply">
-          回复
-        </el-menu-item>
-      </el-submenu>
+      <!-- <el-submenu index="3"> -->
+      <!--   <template slot="title"> -->
+      <!--     <i class="fas fa-comment-alt"></i> -->
+      <!--     <span>消息管理</span> -->
+      <!--   </template> -->
+      <!--   <el-menu-item index="/comment"> -->
+      <!--     评论 -->
+      <!--   </el-menu-item> -->
+      <!--   <el-menu-item index="/reply"> -->
+      <!--     回复 -->
+      <!--   </el-menu-item> -->
+      <!-- </el-submenu> -->
       <el-submenu index="4">
         <template slot="title">
           <i class="fas fa-sitemap"></i>
