@@ -68,7 +68,7 @@
                 size="mini"
                 type="success"
                 @click="downloadFile(scope.row)">
-                <i class="fas fa-download"></i>
+                <i class="fas fa-eye"></i>
               </el-button>
               <el-button
                 round
@@ -138,9 +138,9 @@
               <el-upload
                 class="upload-docs"
                 drag
-                action="/e_api/upload/image"
-                name="image"
-                accept="application/msword,application/pdf"
+                action="/e_api/upload/docs"
+                name="docs"
+                accept="application/pdf"
                 :limit="1"
                 :on-exceed="handleExceed"
                 :on-success="uploadSccuess"
@@ -151,7 +151,7 @@
                   <i class="fas fa-book"></i>
                     将文档拖到此或 <em>点击</em> 上传到服务器
                   <div class="el-upload__tip" slot="tip">
-                    --可以上传PDF、word文件，刷新页面将自动取消上传--
+                    --可以上传PDF文件，刷新页面将自动取消上传--
                   </div>
                 </div>
               </el-upload>
